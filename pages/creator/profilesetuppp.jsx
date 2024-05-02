@@ -1,33 +1,11 @@
-/* import { UploadButton } from "@/utils/uploadthing";
+import { UploadButton } from "@/utils/uploadthing";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import {useLocalStorage} from "@/hooks/useLocalStorage";
+
 export default function Example() {
-  // Check if localStorage is supported and available
-if (typeof window !== "undefined" && window.localStorage) {
-  // Retrieve the user information from localStorage
-  const userData = localStorage.getItem("user");
 
-  // Check if userData is not null (i.e., user data exists in localStorage)
-  if (userData) {
-      // Parse the JSON string to convert it back to an object
-      const user = JSON.parse(userData);
-
-      // Now you can access individual properties of the user object
-      const userEmail = user.email;
-      const userRole = user.role;
-      const userToken = user.token;
-
-      // You can then use these properties as needed in your application
-      console.log("User Email:", userEmail);
-      console.log("User Role:", userRole);
-      console.log("User Token:", userToken);
-  } else {
-      console.log("User data not found in localStorage");
-  }
-} else {
-  console.log("localStorage is not available in this environment");
-}
-
+  const [user , setUser] = useLocalStorage('user')
   const [userinfo, setUserinfo] = useState({
     name: "",
     username: "",
@@ -67,29 +45,34 @@ if (typeof window !== "undefined" && window.localStorage) {
       },
     ],
   });
-  console.log("dhdasjhbjhshjds", userinfo);
+  
  
-  console.log(userinfo);
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.email) {
-      fetch("/api/creator/getcreator", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: user.email }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setUserinfo(data.creator);
-          localStorage.setItem("user", JSON.stringify(data.creator));
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
+    // Fetch user data when component mounts
+    const fetchUserData = async () => {
+      try {
+        
+        
+        const response = await fetch('/api/creator/creator', {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
         });
-    }
+        const responseData = await response.json(); // Parse response JSON
+        console.log('Response data:', responseData); // Log response data
+        if (response.ok) {
+          setUserinfo(responseData.user);
+        } else {
+          // Handle non-successful response (e.g., 404, 401)
+          console.error('Error fetching user data:', responseData.error);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    
+
+    fetchUserData();
   }, []);
 
   const handleProfileImage = async (email, image) => {
@@ -115,7 +98,7 @@ if (typeof window !== "undefined" && window.localStorage) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
+        email,
         bannerImage: image,
       }),
     })
@@ -124,22 +107,26 @@ if (typeof window !== "undefined" && window.localStorage) {
         console.log(data);
       });
   };
+
+  const {  email , name , state, city , description , category} = userinfo
+
+
   const handlePersonalInfo = async (e) => {
     e.preventDefault();
     console.log(e);
-    await fetch("/api/creator/profileupdate", {
+   fetch("/api/creator/profileupdate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: userData.email,
-        name: userinfo.name,
-        phone: userinfo.phone,
-        city: userinfo.city,
-        state: userinfo.state,
-        description: userinfo.description,
-        category: userinfo.category,
+        email,
+        name,
+        phone,
+        city,
+        state,
+        description,
+        category,
       }),
     })
       .then((res) => res.json())
@@ -343,7 +330,7 @@ if (typeof window !== "undefined" && window.localStorage) {
                       htmlFor="city"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      City
+                      City{" "}
                     </label>
                     <input
                       type="text"
@@ -355,6 +342,7 @@ if (typeof window !== "undefined" && window.localStorage) {
                           city: e.target.value,
                         });
                       }}
+                      value = {userinfo ? userinfo.city : ""}
                       autoComplete="address-level2"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
@@ -451,433 +439,433 @@ if (typeof window !== "undefined" && window.localStorage) {
                           <option value="fashion">Fashion</option>
                           <option value="fitness">Fitness</option>
                           <option value="comedy">Comedy</option>
-                          {/* Add more options as needed */
-//                         </select>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//                 <div className="flex justify-start my-4">
-//                   <button
-//                     type="submit"
-//                     className=" inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-//                   >
-//                     Save
-//                   </button>
-//                 </div>
-//               </form>
-//             </div>
-//           </div>
-//         </div>
+                          
+                         </select>
+                       </div>
+                     </div>
+</div>
+                </div>
+                <div className="flex justify-start my-4">
+                   <button
+                    type="submit"
+                    className=" inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
-//         <div className="  px-4 py-5 sm:rounded-lg sm:p-6 border-t">
-//           <div className="md:grid md:grid-cols-3 md:gap-6">
-//             <div className="md:col-span-1">
-//               <h3 className="text-lg font-medium leading-6 text-gray-900">
-//                 Content Info
-//               </h3>
-//               <p className="mt-1 text-sm text-gray-500">
-//                 Info about your content
-//               </p>
-//             </div>
-//             {userinfo?.platforms ? (
-//               <div className="mt-5 md:mt-0 md:col-span-2">
-//                 <form action="#" method="POST" onSubmit={handleContentInfo}>
-//                   <div className="grid grid-cols-6 gap-6">
-//                     <div className="col-span-6 sm:col-span-3 ">
-//                       <label
-//                         htmlFor="category"
-//                         className="block text-sm font-medium text-gray-700"
-//                       >
-//                         Category
-//                       </label>
-//                       <div className="mt-1">
-//                         <select
-//                           name="category"
-//                           id="category"
-//                           onChange={(e) => {
-//                             setUserinfo({
-//                               ...userinfo,
-//                               category: e.target.value,
-//                             });
-//                           }}
-//                           required
-//                           autoComplete="category"
-//                           className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-//                         >
-//                           <option value="fashion">Fashion</option>
-//                           <option value="fitness">Fitness</option>
-//                           <option value="comedy">comedy</option>
-//                         </select>
-//                       </div>
-//                     </div>
-//                     <div className="col-span-6 sm:col-span-6 ">
-//                       <label
-//                         htmlFor="category"
-//                         className="block text-sm font-medium text-gray-700"
-//                       >
-//                         Description
-//                       </label>
-//                       <div className="mt-1">
-//                         <textarea
-//                           name="description"
-//                           id="description"
-//                           rows="3"
-//                           value={userinfo.description}
-//                           onChange={(e) => {
-//                             setUserinfo({
-//                               ...userinfo,
-//                               description: e.target.value,
-//                             });
-//                           }}
-//                           className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
-//                         ></textarea>
-//                       </div>
-//                     </div>
+        <div className="  px-4 py-5 sm:rounded-lg sm:p-6 border-t">
+          <div className="md:grid md:grid-cols-3 md:gap-6">
+            <div className="md:col-span-1">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Content Info
+              </h3>
+            <p className="mt-1 text-sm text-gray-500">
+               Info about your content
+              </p>
+            </div>
+           {userinfo?.platforms ? (
+              <div className="mt-5 md:mt-0 md:col-span-2">
+                <form action="#" method="POST" onSubmit={handleContentInfo}>
+                  <div className="grid grid-cols-6 gap-6">
+                    <div className="col-span-6 sm:col-span-3 ">
+                      <label
+                        htmlFor="category"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Category
+                      </label>
+                      <div className="mt-1">
+                        <select
+                          name="category"
+                          id="category"
+                          onChange={(e) => {
+                            setUserinfo({
+                              ...userinfo,
+                              category: e.target.value,
+                            });
+                          }}
+                          required
+                          autoComplete="category"
+                          className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        >
+                          <option value="fashion">Fashion</option>
+                          <option value="fitness">Fitness</option>
+                          <option value="comedy">comedy</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-span-6 sm:col-span-6 ">
+                      <label
+                        htmlFor="category"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Description
+                      </label>
+                      <div className="mt-1">
+                        <textarea
+                          name="description"
+                          id="description"
+                          rows="3"
+                          value={userinfo.description}
+                          onChange={(e) => {
+                            setUserinfo({
+                              ...userinfo,
+                              description: e.target.value,
+                            });
+                          }}
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                        ></textarea>
+                      </div>
+                    </div>
 
-//                     <div className="col-span-6 sm:col-span-6 ">
-//                       <label
-//                         htmlFor="category"
-//                         className="block text-sm font-medium text-gray-700"
-//                       >
-//                         Platforms
-//                       </label>
+                    <div className="col-span-6 sm:col-span-6 ">
+                      <label
+                        htmlFor="category"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Platforms
+                      </label>
 
-//                       <div className="mt-1 flex gap-2">
-//                         <input
-//                           type="text"
-//                           name="title"
-//                           id="title"
-//                           value={userinfo?.platforms[0]?.profile}
-//                           onChange={(e) => {
-//                             setUserinfo({
-//                               ...userinfo,
-//                               platforms: [
-//                                 {
-//                                   ...userinfo.platforms[0],
-//                                   profile: e.target.value,
-//                                 },
-//                               ],
-//                             });
-//                           }}
-//                           autoComplete="instagramTitle"
-//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                         />
-//                         <input
-//                           type="text"
-//                           name="platform"
-//                           id="platform"
-//                           disabled
-//                           autoComplete="platform"
-//                           value={userinfo.platforms[0]?.platform}
-//                           className="mt-1 focus:ring-indigo-500  focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                         />
+                      <div className="mt-1 flex gap-2">
+                          <input
+                          type="text"
+                          name="title"
+                          id="title"
+                          value={userinfo?.platforms[0]?.profile}
+                          onChange={(e) => {
+                            setUserinfo({
+                              ...userinfo,
+                              platforms: [
+                                {
+                                  ...userinfo.platforms[0],
+                                  profile: e.target.value,
+                                },
+                              ],
+                            });
+                          }}
+                          autoComplete="instagramTitle"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        />
+                        <input
+                          type="text"
+                          name="platform"
+                          id="platform"
+                          disabled
+                          autoComplete="platform" 
+                          value={userinfo.platforms[0]?.platform}
+                          className="mt-1 focus:ring-indigo-500  focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        />
 
-//                         <select
-//                           name="followers"
-//                           id="followers"
-//                           value={userinfo.platforms[0]?.followers}
-//                           onChange={(e) => {
-//                             setUserinfo({
-//                               ...userinfo,
-//                               platforms: [
-//                                 {
-//                                   ...userinfo.platforms[0],
-//                                   followers: e.target.value,
-//                                 },
-//                               ],
-//                             });
-//                           }}
-//                           required
-//                           autoComplete="followers"
-//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                         >
-//                           <option value="select">select your followers</option>
-//                           <option value="0-1k">0-1k</option>
-//                           <option value="1-5k">1-5k</option>
-//                           <option value="5-10k">5-10k</option>
-//                         </select>
-//                       </div>
+                        <select
+                          name="followers"
+                          id="followers"
+                          value={userinfo.platforms[0]?.followers}
+                          onChange={(e) => {
+                            setUserinfo({
+                              ...userinfo,
+                              platforms: [
+                                {
+                                  ...userinfo.platforms[0],
+                                  followers: e.target.value,
+                                },
+                              ],
+                            });
+                          }}
+                          required
+                          autoComplete="followers"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        >
+                          <option value="select">select your followers</option>
+                          <option value="0-1k">0-1k</option>
+                          <option value="1-5k">1-5k</option>
+                          <option value="5-10k">5-10k</option>
+                        </select>
+                      </div>
 
-//                       <div className="mt-1 flex gap-2">
-//                         <input
-//                           type="text"
-//                           name="title"
-//                           id="title"
-//                           value={userinfo.platforms[1]?.profile}
-//                           onChange={(e) => {
-//                             setUserinfo({
-//                               ...userinfo,
-//                               platforms: [
-//                                 {
-//                                   ...userinfo.platforms[1],
-//                                   profile: e.target.value,
-//                                 },
-//                               ],
-//                             });
-//                           }}
-//                           autoComplete="instagramTitle"
-//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                         />
-//                         <input
-//                           type="text"
-//                           name="platform"
-//                           id="platform"
-//                           disabled
-//                           autoComplete="platform"
-//                           value={userinfo.platforms[1]?.platform}
-//                           className="mt-1 focus:ring-indigo-500  focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                         />
+                      <div className="mt-1 flex gap-2">
+                        <input
+                          type="text"
+                          name="title"
+                          id="title"
+                          value={userinfo.platforms[1]?.profile}
+                          onChange={(e) => {
+                            setUserinfo({
+                              ...userinfo,
+                              platforms: [
+                                {
+                                  ...userinfo.platforms[1],
+                                  profile: e.target.value,
+                                },
+                              ],
+                            });
+                          }}
+                          autoComplete="instagramTitle"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        />
+                        <input
+                          type="text"
+                          name="platform"
+                          id="platform"
+                          disabled
+                          autoComplete="platform"
+                          value={userinfo.platforms[1]?.platform}
+                          className="mt-1 focus:ring-indigo-500  focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        />
 
-//                         <select
-//                           name="followers"
-//                           id="followers"
-//                           value={userinfo.platforms[1]?.followers}
-//                           onChange={(e) => {
-//                             setUserinfo({
-//                               ...userinfo,
-//                               platforms: [
-//                                 {
-//                                   ...userinfo.platforms[1],
-//                                   followers: e.target.value,
-//                                 },
-//                               ],
-//                             });
-//                           }}
-//                           required
-//                           autoComplete="followers"
-//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                         >
-//                           <option value="select">select your followers</option>
-//                           <option value="0-1k">0-1k</option>
-//                           <option value="1-5k">1-5k</option>
-//                           <option value="5-10k">5-10k</option>
-//                         </select>
-//                       </div>
+                        <select
+                          name="followers"
+                          id="followers"
+                          value={userinfo.platforms[1]?.followers}
+                          onChange={(e) => {
+                            setUserinfo({
+                              ...userinfo,
+                              platforms: [
+                                {
+                                  ...userinfo.platforms[1],
+                                  followers: e.target.value,
+                                },
+                              ],
+                            });
+                          }}
+                          required
+                          autoComplete="followers"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        >
+                          <option value="select">select your followers</option>
+                          <option value="0-1k">0-1k</option>
+                          <option value="1-5k">1-5k</option>
+                          <option value="5-10k">5-10k</option>
+                      </select>
+                      </div>
 
-//                       <div className="mt-1 flex gap-2">
-//                         <input
-//                           type="text"
-//                           name="title"
-//                           id="title"
-//                           value={userinfo.platforms[2]?.profile}
-//                           onChange={(e) => {
-//                             setUserinfo({
-//                               ...userinfo,
-//                               platforms: [
-//                                 {
-//                                   ...userinfo.platforms[2],
-//                                   profile: e.target.value,
-//                                 },
-//                               ],
-//                             });
-//                           }}
-//                           autoComplete="instagramTitle"
-//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                         />
-//                         <input
-//                           type="text"
-//                           name="platform"
-//                           id="platform"
-//                           disabled
-//                           autoComplete="platform"
-//                           value={userinfo.platforms[2]?.platform}
-//                           className="mt-1 focus:ring-indigo-500  focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                         />
+                       <div className="mt-1 flex gap-2">
+                        <input
+                          type="text"
+                          name="title"
+                          id="title"
+                          value={userinfo.platforms[2]?.profile}
+                          onChange={(e) => {
+                            setUserinfo({
+                              ...userinfo,
+                              platforms: [
+                                {
+                                  ...userinfo.platforms[2],
+                                  profile: e.target.value,
+                                },
+                              ],
+                            });
+                          }}
+                          autoComplete="instagramTitle"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        />
+                        <input
+                          type="text"
+                          name="platform"
+                          id="platform"
+                          disabled
+                          autoComplete="platform"
+                          value={userinfo.platforms[2]?.platform}
+                          className="mt-1 focus:ring-indigo-500  focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        />
 
-//                         <select
-//                           name="followers"
-//                           id="followers"
-//                           value={userinfo.platforms[2]?.followers}
-//                           onChange={(e) => {
-//                             setUserinfo({
-//                               ...userinfo,
-//                               platforms: [
-//                                 {
-//                                   ...userinfo.platforms[2],
-//                                   followers: e.target.value,
-//                                 },
-//                               ],
-//                             });
-//                           }}
-//                           required
-//                           autoComplete="followers"
-//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                         >
-//                           <option value="select">select your followers</option>
-//                           <option value="0-1k">0-1k</option>
-//                           <option value="1-5k">1-5k</option>
-//                           <option value="5-10k">5-10k</option>
-//                         </select>
-//                       </div>
-//                     </div>
-//                   </div>
-//                   <div className="flex justify-start my-4">
-//                     <button
-//                       type="submit"
-//                       className=" inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-//                     >
-//                       Save
-//                     </button>
-//                   </div>
-//                 </form>
-//               </div>
-//             ) : (
-//               ""
-//             )}
-//           </div>
-//         </div>
+                        <select
+                          name="followers"
+                          id="followers"
+                          value={userinfo.platforms[2]?.followers}
+                          onChange={(e) => {
+                            setUserinfo({
+                              ...userinfo,
+                              platforms: [
+                                {
+                                  ...userinfo.platforms[2],
+                                  followers: e.target.value,
+                                },
+                              ],
+                            });
+                          }}
+                          required
+                          autoComplete="followers"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-1/2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        >
+                          <option value="select">select your followers</option>
+                          <option value="0-1k">0-1k</option>
+                          <option value="1-5k">1-5k</option>
+                          <option value="5-10k">5-10k</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-start my-4">
+                    <button
+                      type="submit"
+                      className=" inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
 
-//         <div className="  px-4 py-5 sm:rounded-lg sm:p-6 border-t">
-//           <div className="md:grid md:grid-cols-3 md:gap-6">
-//             <div className="md:col-span-1">
-//               <h3 className="text-lg font-medium leading-6 text-gray-900">
-//                 Packages You provide
-//               </h3>
-//               <p className="mt-1 text-sm text-gray-500">
-//                 add your packages here for brands to see
-//               </p>
-//             </div>
-//             <div className="mt-5 md:mt-0 md:col-span-2">
-//               <form action="#" method="POST" onSubmit={handlePackagesInfo}>
-//                 <div className="grid grid-cols-6 gap-6">
-//                   <div className="col-span-6 sm:col-span-6 ">
-//                     <label
-//                       htmlFor="category"
-//                       className="block text-sm font-medium text-gray-700"
-//                     >
-//                       Packages
-//                     </label>
-//                     {userinfo?.packages?.map((item, index) => {
-//                       return (
-//                         <div
-//                           className="mt-1 grid grid-cols-6 gap-2"
-//                           key={index}
-//                         >
-//                           <input
-//                             type="text"
-//                             name="title"
-//                             id="title"
-//                             value={item.title}
-//                             onChange={(e) => {
-//                               setUserinfo({
-//                                 ...userinfo,
-//                                 packages: [
-//                                   {
-//                                     ...userinfo.packages[index],
-//                                     title: e.target.value,
-//                                   },
-//                                 ],
-//                               });
-//                             }}
-//                             placeholder="title of package"
-//                             autoComplete="title"
-//                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block  col-span-2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                           />
-//                           <select
-//                             name="platform"
-//                             id="platform"
-//                             onChange={(e) => {
-//                               setUserinfo({
-//                                 ...userinfo,
-//                                 packages: [
-//                                   {
-//                                     ...userinfo.packages[index],
-//                                     platform: e.target.value,
-//                                   },
-//                                 ],
-//                               });
-//                             }}
-//                             value={item.platform}
-//                             required
-//                             autoComplete="platform"
-//                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block  col-span-2 shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                           >
-//                             <option value="instagram">Instagram</option>
-//                             <option value="facebook">Facebook</option>
-//                             <option value="youtube">Youtube</option>
-//                           </select>
+        <div className="  px-4 py-5 sm:rounded-lg sm:p-6 border-t">
+          <div className="md:grid md:grid-cols-3 md:gap-6">
+            <div className="md:col-span-1">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Packages You provide
+              </h3>
+              <p className="mt-1 text-sm text-gray-500">
+                add your packages here for brands to see
+              </p>
+            </div>
+              <div className="mt-5 md:mt-0 md:col-span-2">
+               <form action="#" method="POST" onSubmit={handlePackagesInfo}>
+                <div className="grid grid-cols-6 gap-6">
+                  <div className="col-span-6 sm:col-span-6 ">
+                     <label
+                      htmlFor="category"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Packages
+                    </label>
+                    {userinfo?.packages?.map((item, index) => {
+                      return (
+                        <div
+                          className="mt-1 grid grid-cols-6 gap-2"
+                          key={index}
+                        >
+                          <input
+                            type="text"
+                            name="title"
+                            id="title"
+                            value={item.title}
+                            onChange={(e) => {
+                              setUserinfo({
+                                ...userinfo,
+                                packages: [
+                                  {
+                                    ...userinfo.packages[index], 
+                                    title: e.target.value,
+                                  },
+                                ],
+                              });
+                            }}
+                            placeholder="title of package"
+                            autoComplete="title"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block  col-span-2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                          <select
+                            name="platform"
+                            id="platform"
+                            onChange={(e) => {
+                              setUserinfo({
+                                ...userinfo,
+                                packages: [
+                                  {
+                                    ...userinfo.packages[index],
+                                    platform: e.target.value,
+                                  },
+                                ],
+                              });
+                            }}
+                            value={item.platform}
+                            required
+                            autoComplete="platform"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block  col-span-2 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          >
+                            <option value="instagram">Instagram</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="youtube">Youtube</option>
+                          </select>
 
-//                           <input
-//                             type="text"
-//                             name="price"
-//                             id="price"
-//                             value={item.price}
-//                             placeholder="price"
-//                             onChange={(e) => {
-//                               setUserinfo({
-//                                 ...userinfo,
-//                                 packages: [
-//                                   {
-//                                     ...userinfo.packages[index],
-//                                     price: e.target.value,
-//                                   },
-//                                 ],
-//                               });
-//                             }}
-//                             autoComplete="price"
-//                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block col-span-2  shadow-sm sm:text-sm border-gray-300 rounded-md"
-//                           />
-//                           <textarea
-//                             placeholder="describe your package"
-//                             name="description"
-//                             id="description"
-//                             onChange={(e) => {
-//                               setUserinfo({
-//                                 ...userinfo,
-//                                 packages: [
-//                                   {
-//                                     ...userinfo.packages[index],
-//                                     description: e.target.value,
-//                                   },
-//                                 ],
-//                               });
-//                             }}
-//                             value={item.description}
-//                             rows="3"
-//                             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block col-span-6 sm:text-sm border-gray-300 rounded-md"
-//                           ></textarea>
-//                         </div>
-//                       );
-//                     })}
-//                     <p
-//                       className="flex justify-end cursor-pointer px-2 py-1 bg-gray-200 w-max m-1 rounded-md ml-auto"
-//                       onClick={() =>
-//                         setUserinfo({
-//                           ...userinfo,
-//                           packages: [
-//                             ...userinfo.packages,
-//                             {
-//                               title: "",
-//                               platform: "",
-//                               price: "",
-//                               description: "",
-//                             },
-//                           ],
-//                         })
-//                       }
-//                     >
-//                       +
-//                     </p>
-//                   </div>
-//                 </div>
-//                 <div className="flex justify-start my-4">
-//                   <button
-//                     type="submit"
-//                     className=" inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-//                   >
-//                     Save
-//                   </button>
-//                 </div>
-//               </form>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-//  */
+                          <input
+                            type="text"
+                            name="price"
+                            id="price"
+                            value={item.price}
+                            placeholder="price"
+                            onChange={(e) => {
+                              setUserinfo({
+                                ...userinfo,
+                                packages: [
+                                  {
+                                    ...userinfo.packages[index],
+                                    price: e.target.value,
+                                  },
+                                ],
+                              });
+                            }}
+                            autoComplete="price"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block col-span-2  shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                          <textarea
+                            placeholder="describe your package"
+                            name="description"
+                            id="description"
+                            onChange={(e) => {
+                              setUserinfo({
+                                ...userinfo,
+                                packages: [
+                                  {
+                                    ...userinfo.packages[index],
+                                    description: e.target.value,
+                                  },
+                                ],
+                              });
+                            }}
+                            value={item.description}
+                            rows="3"
+                            className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block col-span-6 sm:text-sm border-gray-300 rounded-md"
+                          ></textarea>
+                        </div>
+                      );
+                    })}
+                    <p
+                      className="flex justify-end cursor-pointer px-2 py-1 bg-gray-200 w-max m-1 rounded-md ml-auto"
+                      onClick={() =>
+                        setUserinfo({
+                          ...userinfo,
+                          packages: [
+                            ...userinfo.packages,
+                            {
+                              title: "",
+                              platform: "",
+                              price: "",
+                              description: "",
+                            },
+                          ],
+                        })
+                      }
+                    >
+                      +
+                    </p>
+                  </div>
+                </div>
+                <div className="flex justify-start my-4">
+                  <button
+                    type="submit"
+                    className=" inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+ 
 
 // import { UploadButton } from "@/utils/uploadthing";
 // import { useState, useEffect } from "react";
@@ -1302,7 +1290,7 @@ if (typeof window !== "undefined" && window.localStorage) {
 
 // pages/profile.jsx
 
-import { useState, useEffect } from 'react';
+/* import { useState, useEffect } from 'react';
 
 
 export default function Profile() {
@@ -1353,3 +1341,4 @@ export default function Profile() {
     </div>
   );
 }
+ */

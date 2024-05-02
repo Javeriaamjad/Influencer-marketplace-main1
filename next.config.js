@@ -35,6 +35,9 @@ const nextConfig = {
       // "yt3.googleusercontent.com",
     ],
   },
+  env: {
+    PASSWORD: '',
+  },
 };
 
 module.exports = nextConfig;

@@ -136,7 +136,7 @@ const Navbar = () => {
               Explore {menu === "Explore" ? <hr /> : <></>}
             </Link>
             <Link
-              href="/creator/profilesetup"
+              href="/creator/profilesetuppp"
               className={buttonVariants({
                 variant: "ghost",
                 size: "sm",
