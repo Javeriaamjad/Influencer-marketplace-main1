@@ -8,9 +8,9 @@ import jwt from 'jsonwebtoken';
 
 const handler = async (req, res) => {
   if (req.method === 'POST') {
+    try {
     const { email, password } = req.body;
     
-    try {
       // Check if the email exists in either brand or creator collection
       const brand = await Brand.findOne({ email });
       const creator = await Creator.findOne({ email });
@@ -43,7 +43,7 @@ const handler = async (req, res) => {
     }
   } else {
     // Method not allowed
-    return res.status(405).end();
+    return res.status(500).end();
   }
 };
 

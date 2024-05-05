@@ -7,6 +7,7 @@ const login = async (req, res) => {
         const base64Credentials = req.headers.authorization?.split(' ')[1];
         const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
         if (credentials === process.env.USER_ID + ":" + process.env.PASSWORD) {
+            console.log()
             try {
                 const creator = await Creator.findOne({ email: req.body.email });
                 if (creator) {

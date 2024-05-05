@@ -11,6 +11,7 @@ const CreatorSchema = new mongoose.Schema({
     bannerImage:{type: String, default:""},
     city:{type:String,default:""},
     state:{type:String,default:""},
+    description:{type:String,default:""},
 
     chats: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],

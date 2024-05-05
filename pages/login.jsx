@@ -6,9 +6,56 @@ import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+
+export const useLocalStorage = (key, defaultValue) => {
+	// Create state variable to store 
+	// localStorage value in state
+	const [localStorageValue, setLocalStorageValue] = useState(() => {
+		try {
+			const value = localStorage.getItem(key)
+			// If value is already present in 
+			// localStorage then return it
+			
+			// Else set default value in 
+			// localStorage and then return it
+			if (value) {
+				return JSON.parse(value)
+			} else {
+				localStorage.setItem(key, JSON.stringify(defaultValue));
+				return defaultValue
+			}
+		} catch (error) {
+			localStorage.setItem(key, JSON.stringify(defaultValue));
+			return defaultValue
+		}
+	})
+
+	// this method update our localStorage and our state
+	const setLocalStorageStateValue = (valueOrFn) => {
+		let newValue;
+		if (typeof valueOrFn === 'function') {
+			const fn = valueOrFn;
+			newValue = fn(localStorageValue)
+		}
+		else {
+			newValue = valueOrFn;
+		}
+		localStorage.setItem(key, JSON.stringify(newValue));
+		setLocalStorageValue(newValue)
+	}
+	return [localStorageValue, setLocalStorageStateValue]
+}
+
+
+
+
+
+
 export default function Example() {
   const router = useRouter();
   const [token,setToken] = useState(null)
+  const [user , setUser] = useLocalStorage('user')
+  
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -20,6 +67,7 @@ export default function Example() {
       [name]: value,
     });
   };
+<<<<<<< HEAD
   useEffect(()=>{
     if (token){
     const {token} = localStorage.getItem("user")
@@ -29,6 +77,16 @@ export default function Example() {
       return
     }
     },[])
+=======
+  console.log("user token", user.token)
+  useEffect(() => {
+    if (user) {
+      const { token } = JSON.parse(user.token);
+      console.log("user token", user.token)
+      setToken(token);
+    }
+  }, []);
+>>>>>>> origin/main
   
   const handleSubmit = (e) => {
     e.preventDefault();

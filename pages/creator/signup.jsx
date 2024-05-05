@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Example() {
     const router = useRouter();
+ 
     
     const [userInfo, setUserInfo] = useState({
         name: "",
@@ -57,10 +58,6 @@ export default function Example() {
                             theme: "light",
                         });
 
-                        if (typeof window !== "undefined") {
-                            console.log("signup",data)
-                            localStorage.setItem("user", JSON.stringify(data))
-                        }
                         // setTimeout(() => {
                         //     // router.push("/creator/profilesetup")
                         // }, 1000)
@@ -92,7 +89,7 @@ export default function Example() {
                         theme: "light",
                     });
                 }
-                router.push("/creator/profilesetup")
+                router.push("/creator/profilesetuppp")
             }
             )
             

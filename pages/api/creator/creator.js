@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     // Print out the JWT secret used for verification
     console.log("JWT secret:", process.env.JWT_SECRET);
 
-    console.log("bhar me jao token", token);
+   
     if (!token) {
         return res.status(401).json({ message: 'Token is required' });
     }
