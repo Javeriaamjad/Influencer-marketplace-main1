@@ -21,8 +21,13 @@ export default function Example() {
     });
   };
   useEffect(()=>{
+    if (token){
     const {token} = localStorage.getItem("user")
     setToken(JSON.stringify({token}))
+    }
+    else{
+      return
+    }
     },[])
   
   const handleSubmit = (e) => {

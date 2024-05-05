@@ -35,7 +35,7 @@
 
 // export default connectDB(login);
 
-import Creator from "@/model/Creator";
+/* import Creator from "@/model/Creator";
 import connectDB from "@/middleware/mongoose";
 
 const addPackages = async (req, res) => {
@@ -67,4 +67,34 @@ const addPackages = async (req, res) => {
     }
 }
 
-export default connectDB(addPackages);
+export default connectDB(addPackages); */
+
+import connectDB from '@/middleware/mongoose';
+import Creator from '@/model/Creator';
+
+
+export default connectDB(async (req, res) => {
+  if (req.method === 'POST') {
+    const { email, packages   } = req.body;
+    console.log(email,packages)
+
+    try {
+      let user = await Creator.findOne({ email });
+      console.log("user",user)
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+    
+      user.packages = packages
+      await user.save();
+
+      return res.json({ success: true, message: 'Profile updated successfully' });
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  } else {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+});
+
+
