@@ -93,23 +93,80 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import React, { useEffect } from 'react';
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
 import TextShine from "@/components/TextShine";
 import styles from "./Navbar.module.css";
+import jwt_decode from "jwt-decode";
+
+// Rest of the component code
+
+
 
 const Navbar = () => {
+  
+
+  
   const router = useRouter();
   const [menu, setMenu] = useState("Explore");
 
   const handleLogout = () => {
-    // Clear the JWT token from local storage or perform any other necessary logout actions
-    console.log("ffffffffff",localStorage.getItem("token")); 
-    localStorage.removeItem("user"); // Assuming you stored the token as 'token' in local storage
-    console.log(localStorage.getItem("token")); 
+    
+    localStorage.removeItem("user"); 
 
-    // Redirect the user to the login page
     router.push("/login");
+  };
+  // Logic to determine profile setup link based on user's role
+  const [userRole, setUserRole] = useState("");
+  
+
+  useEffect(() => {
+    // Fetch user data when component mounts
+    const fetchUserData = async () => {
+      try {
+        
+        
+        const storedUserData = JSON.parse(localStorage.getItem('user'));
+        const token = storedUserData.token;
+
+
+        console.log("storedUserData",token)
+        const response = await fetch('/api/user', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const responseData = await response.json(); // Parse response JSON
+
+        console.log('Response data:', responseData); // Log response data
+        if (response.ok) {
+          setUserRole(responseData.role);
+        } else {
+          // Handle non-successful response (e.g., 404, 401)
+          console.error('Error fetching user data:', responseData.error);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    
+
+    fetchUserData();
+  }, []);
+  console.log("ddd",userRole.role)
+
+  const userProfileSetupLink = () => {
+    if (userRole === "brand") {
+      console.log("hell if runs")
+      return "/brand/profilesetup";
+    } 
+    else if (userRole === "creator") {
+      console.log("hell if else runs")
+      return "/creator/profilesetuppp";
+    } else {
+      return "/";
+    }
   };
 
   return (
@@ -136,7 +193,7 @@ const Navbar = () => {
               Explore {menu === "Explore" ? <hr /> : <></>}
             </Link>
             <Link
-              href="/creator/profilesetuppp"
+              href={userProfileSetupLink()} 
               className={buttonVariants({
                 variant: "ghost",
                 size: "sm",

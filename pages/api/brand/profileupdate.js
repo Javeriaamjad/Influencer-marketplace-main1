@@ -44,35 +44,35 @@ const login = async (req, res) => {
 }
 
 export default connectDB(login); */
-import Brand from "@/model/Brand";
-import connectDB from "@/middleware/mongoose";
+import connectDB from '@/middleware/mongoose';
+import Brand from '@/model/Brand';
 
-const updateBrandProfile = async (req, res) => {
+
+export default connectDB(async (req, res) => {
+  if (req.method === 'POST') {
+    const { name, email, phone, city, state , profileImage , description,category} = req.body;
+
     try {
-        // Check if brand exists based on email
-        const brand = await Brand.findOne({ email: req.body.email });
+      let user = await Brand.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
 
-        if (brand) {
-            // Update brand profile fields if provided in the request body
-            if (req.body.name) brand.name = req.body.name;
-            if (req.body.profileImage) brand.profileImage = req.body.profileImage;
-            if (req.body.city) brand.city = req.body.city;
-            if (req.body.profileImage) brand.profileImage = req.body.profileImage;
-            if (req.body.description) brand.description = req.body.description;
+      // Update user profile
+      user.profileImage = profileImage;
+      user.name = name;
+      user.phone = phone;
+      user.city = city;
+      user.state = state;
+      user.description = description,
+      user.category = category,
+      await user.save();
 
-            // Save the updated brand profile
-            await brand.save();
-
-            res.status(200).json({ success: true, message: "Brand profile updated successfully" });
-        } else {
-            // Brand not found, return error
-            res.status(404).json({ success: false, message: "Brand not found" });
-        }
+      return res.json({ success: true, message: 'Profile updated successfully' });
     } catch (error) {
-        console.error("Error updating brand profile:", error);
-        res.status(500).json({ success: false, message: "Internal server error" });
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
-};
-
-export default connectDB(updateBrandProfile);
-
+  } else {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+});

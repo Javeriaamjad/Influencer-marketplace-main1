@@ -48,7 +48,12 @@
         "name": "Lifestyle Consultation",
         "price": 50,
         "description": "Book a personalized lifestyle consultation with me.",
-        "platform": "Twitter"
+        "platform": "Twitter",
+        "videos": [
+          "https://example.com/video1.mp4",
+          "https://example.com/video2.mp4",
+          "https://example.com/video3.mp4"
+        ],
       },
       {
         "name": "Mindfulness Workshop",

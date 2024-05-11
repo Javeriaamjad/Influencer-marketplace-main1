@@ -27,12 +27,12 @@ const handler = async (req, res) => {
       
 
       await newCreator.save();
-
-      // Generate JWT token
+      
       const token = jwt.sign({ id: newCreator._id, email: newCreator.email }, process.env.JWT_SECRET, { expiresIn: '30d' });
+      console.log("token in creator",token)
 
       // Respond with success message and token
-      return res.status(200).json({ success: true, message: 'Creator signup successful', token });
+      return res.status(200).json({ success: true, message: 'Creator signup successful', token , newCreator });
     } catch (error) {
       // Handle any errors
       console.log(error)

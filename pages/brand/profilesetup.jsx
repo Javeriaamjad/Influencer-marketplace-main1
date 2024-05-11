@@ -11,37 +11,44 @@ export default function Example() {
     password: "",
     role: "brand",
     profileImage: "",
+    discription:"",
+    Address:"",
+    
   });
   
   
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      fetch("/api/brand/getbrand", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic ${btoa(user.email + ":" + user.token)}`,
-        },
-        body: JSON.stringify({ email: user.email }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          if (data.success) {
-            setUserInfo(data.brandUser); // Assuming data contains a property called brandUser
-          } else {
-            // Handle error case
-            console.error(data.message);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching brand user:", error);
+    // Fetch user data when component mounts
+    const fetchUserData = async () => {
+      try {
+        
+        
+        const storedUserData = JSON.parse(localStorage.getItem('user'));
+        const token = storedUserData.token;
+
+
+        console.log("storedUserData",token)
+        const response = await fetch('/api/brand/getbrand', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-      
-    }
+        const responseData = await response.json(); // Parse response JSON
+        console.log('Response data:', responseData); // Log response data
+        if (response.ok) {
+          setUserInfo(responseData.user);
+        } else {
+          // Handle non-successful response (e.g., 404, 401)
+          console.error('Error fetching user data:', responseData.error);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
   }, []);
-  const handleprofileupdate = async (e) => {
+
+const handleprofileupdate = async (e) => {
     e.preventDefault();
     await fetch("/api/brand/profileupdate", {
       method: "POST",

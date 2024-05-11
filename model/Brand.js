@@ -7,6 +7,7 @@ const BrandSchema = new mongoose.Schema({
     role: { type: String,required:true ,default:"brand"},
     profileImage:{type: String,default:""},
     location:{type:String,default:""},
+    Address:{ type : String,default:""},
     description:{type:String,default:""},
     rating:{type:Number,default:0},
     reviews:{type:Array,default:[]},

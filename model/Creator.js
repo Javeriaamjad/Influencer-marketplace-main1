@@ -21,6 +21,7 @@ const CreatorSchema = new mongoose.Schema({
     category:{type:Array,default:[]},
     platforms:{type:Array,default:[]},
     bannerImage:{type: String,default:""},
+    videos : {type:Array, default: []},
     achievments:{type:Array,default:[]},
     description:{type:String,default:""},
     packages:{type:Array,default:[]},

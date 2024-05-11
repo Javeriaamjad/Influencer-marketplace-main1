@@ -4,7 +4,8 @@
 // This example assumes you're using MongoDB with Mongoose
 
 import mongoose from 'mongoose';
-import Creator from '../model/Creator'; // Assuming you have a User model defined
+import Creator from '../model/Creator'; 
+import Brand from  "../model/Brand"      ;// Assuming you have a User model defined
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -29,3 +30,23 @@ export async function getUserById(userId) {
     return null; // Return null in case of an error
   }
 }
+
+export async function getBrandById(userId) {
+ 
+  try {
+    // Fetch user data from the database
+    
+    const user = await Brand.findById({
+      _id:userId,
+
+    })
+   
+    return user; // Return the user data
+  } catch (error) {
+    console.error('Error fetching user by ID:', error);
+    return null; // Return null in case of an error
+  }
+}
+
+
+

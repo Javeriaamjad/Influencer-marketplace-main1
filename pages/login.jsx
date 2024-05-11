@@ -135,13 +135,18 @@ export default function Example() {
           </form>
           <div>
             <p className="text-sm text-gray-500">
-              Don&#39;t have an account?{" "}
-              <Link href="/signup">
-                <span className="text-blue-500 hover:underline">Sign up</span>
+              Don&#39;t have an account? Sign Up {" "}
+              <Link href="/brand/signup">
+              <span>As a </span>
+                <span className="text-blue-500 hover:underline">Brand {" "}</span>
+              </Link>
+              <Link href="/creator/signup">
+              
+              <span className="text-blue-500 hover:underline">Creator</span>
               </Link>
             </p>
           </div>
-          t
+      
         </div>
       </div>
       {/* <Footer /> */}
