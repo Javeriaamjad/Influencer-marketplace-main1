@@ -1,4 +1,5 @@
-import mongoose from "mongoose"
+// models/Message.js
+import mongoose from "mongoose";
 
 const MessageSchema = new mongoose.Schema({
   chat: {
@@ -8,7 +9,7 @@ const MessageSchema = new mongoose.Schema({
   sender: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-  },  
+  },
   text: {
     type: String,
     default: "",
@@ -22,11 +23,11 @@ const MessageSchema = new mongoose.Schema({
     default: Date.now,
   },
   seenBy: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    default: []
-  }
-})
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    default: [],
+  },
+});
 
-const Message = mongoose.models.Message || mongoose.model('Message', MessageSchema)
+const Message = mongoose.models.Message || mongoose.model("Message", MessageSchema);
 
-export default Message
+export default Message;

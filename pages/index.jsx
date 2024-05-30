@@ -58,53 +58,8 @@ const Index = ({ creator }) => {
                 </div>
               </div>
             </div>
-            {/* Instagram */}
-            <div className="mx-auto max-w-7xl px-6 my-16">
-              <h1 className="text-xl font-semibold">Instagram</h1>
-              <p className="max-w-prose text-zinc-400">
-                Hire Instagram influencers
-              </p>
-              <div className="mt-10 flow-root">
-                <div className="m-2 flex flex-row justify-evenly gap-4 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
-                {creator.slice(0, 4).map((item) => (
-                    <Link key={item._id} href={`/creator/${item.username}`}>
-                      <HomeCard
-                        imageLink={item.profileImage}
-                        platform={item.platforms.map((cur) => `${cur.platform}, `)}
-                        price={item.packages && item.packages.length > 0 ? item.packages[0].price : ''}
-                        categories={[item.category]}
-                      />
-                    </Link>
-                  ))}
-
-                </div>
-              </div>
-            </div>
-            {/* Youtube */}
-            <div className="mx-auto max-w-7xl px-6 my-16">
-              <h1 className="text-xl font-semibold">Youtube</h1>
-              <p className="max-w-prose text-zinc-400">
-                Hire Youtube influencers
-              </p>
-              <div className="mt-10 flow-root">
-                <div className="m-2 flex flex-row justify-evenly gap-4 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
-                  {creator.slice(8, 12).map((item) => (
-                    <Link key={item._id} href={`/creator/${item.username}`}>
-                      <HomeCard
-                        imageLink={item.profileImage}
-                        platform={item.platforms.map(
-                          (cur) => `${cur.platform}, `
-                        )}
-                        price={item.packages && item.packages.length > 0 ? item.packages[0].price : ''}
-                         categories={[item.category]}
-                      />
-                    </Link>
-                  ))}
-                </div>
-                <HowItWorks />
-                {/* <Faq /> */}
-              </div>
-            </div>
+      
+            
           </div>
         </div>
       </div>

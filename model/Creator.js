@@ -12,6 +12,8 @@ const CreatorSchema = new mongoose.Schema({
     city:{type:String,default:""},
     state:{type:String,default:""},
     description:{type:String,default:""},
+    Bio:{type:String,default:""},
+    media:{type:Array,default:[]},
 
     chats: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
@@ -23,7 +25,7 @@ const CreatorSchema = new mongoose.Schema({
     bannerImage:{type: String,default:""},
     videos : {type:Array, default: []},
     achievments:{type:Array,default:[]},
-    description:{type:String,default:""},
+    
     packages:{type:Array,default:[]},
     rating:{type:Number,default:0},
     reviews:{type:Array,default:[]},

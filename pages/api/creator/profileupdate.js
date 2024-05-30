@@ -4,7 +4,7 @@ import Creator from '@/model/Creator';
 
 export default connectDB(async (req, res) => {
   if (req.method === 'POST') {
-    const { name, email, phone, city, state , profileImage , description,category} = req.body;
+    const { name, email, phone, city, state ,Bio , category} = req.body;
 
     try {
       let user = await Creator.findOne({ email });
@@ -17,7 +17,7 @@ export default connectDB(async (req, res) => {
       user.phone = phone;
       user.city = city;
       user.state = state;
-      user.description = description,
+      user.Bio = Bio;
       user.category = category,
       await user.save();
 
