@@ -145,7 +145,7 @@ const Navbar = () => {
 
     fetchUserData();
   }, []);
-  console.log("ddd", userRole.role);
+ 
 
   const handleProfileImage = async (email, image) => {
     await fetch("/api/creator/profileImageupdate", {

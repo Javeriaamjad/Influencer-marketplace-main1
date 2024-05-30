@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -8,11 +9,12 @@ import { Input } from "@/components/ui/input";
 
 export default function Example() {
   const router = useRouter();
-  const [token,setToken] = useState(null)
+  const [token, setToken] = useState(null);
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserInfo({
@@ -20,19 +22,16 @@ export default function Example() {
       [name]: value,
     });
   };
-  useEffect(()=>{
-    if (token){
-    const {token} = localStorage.getItem("user")
-    setToken(JSON.stringify({token}))
+
+  useEffect(() => {
+    const userToken = localStorage.getItem("user");
+    if (userToken) {
+      setToken(JSON.parse(userToken).token);
     }
-    else{
-      return
-    }
-    },[])
-  
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(userInfo)
     fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -43,9 +42,8 @@ export default function Example() {
     })
       .then((res) => res.json())
       .then((data) => {
-      console.log(data)
+        console.log(data);
         if (data.success) {
-          // alert("Account Created")
           toast.success("Login Success", {
             position: "top-left",
             autoClose: 5000,
@@ -56,19 +54,17 @@ export default function Example() {
             progress: undefined,
             theme: "light",
           });
-          if (typeof window !== "undefined") {
-            localStorage.setItem("user", JSON.stringify({
-              email: data.email,
-              role: data.role,
-              token: data.token,
-            }));
-          }
+          localStorage.setItem("user", JSON.stringify({
+            email: data.email,
+            role: data.role,
+            token: data.token,
+          }));
           setTimeout(() => {
             if (data.role === "brand") {
               router.push("/brand");
-            }else if (data.role === "creator") {
+            } else if (data.role === "creator") {
               router.push("/creator");
-            }else {
+            } else {
               router.push("/");
             }
           }, 1000);
@@ -101,37 +97,51 @@ export default function Example() {
         pauseOnHover
         theme="light"
       />
-      {/* <Navbar /> */}
-      <div className="h-max text-center py-20">
-        <h1 className="text-3xl font-semibold mt-20">Login to your account</h1>
-        <div className=" w-full ">
-          <form
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 gap-5 w-80 my-10 mx-auto"
-          >
-            <Input
-              onChange={handleChange}
-              id="email"
-              name="email"
-              required
-              type="email"
-              value={userInfo.email}
-              placeholder="Email address"
-            />
-            <Input
-              onChange={handleChange}
-              id="password"
-              name="password"
-              type="password"
-              required
-              minLength={1}
-              value={userInfo.password}
-              placeholder="Password"
-            />
-            <Link href="/forgot">
-              <p className="text-blue-500 hover:underline">forgot password?</p>
+      <div className="h-screen flex justify-center items-center" style={{ backgroundImage: 'url("https://th.bing.com/th/id/R.3c2ffe4cdced7bd922e37e5b21ff32e2?rik=kC2DYUkF6yAU%2bw&pid=ImgRaw&r=0")', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backdropFilter: 'blur(70%)' }}>
+        <div className="bg-white bg-opacity-50 backdrop-blur-md p-4 rounded-lg shadow-lg w-2/5 flex flex-col items-center justify-center" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '20px' }}>
+          <h1 className="text-5xl font-semibold text-pink-900 mb-8 text-center">
+            Login
+          </h1>
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 w-full items-center">
+            <div className="flex justify-center w-full">
+              <Input
+                onChange={handleChange}
+                id="email"
+                name="email"
+                required
+                type="email"
+                value={userInfo.email}
+                className="border-2 border-pink-500 shadow-sm p-4 rounded-md outline-none focus:border-pink-700 w-64 placeholder-black"
+                placeholder="Email address"
+                style={{ height: '100%' }}
+              />
+            </div>
+            <div className="flex justify-center w-full">
+              <Input
+                onChange={handleChange}
+                id="password"
+                name="password"
+                type="password"
+                required
+                minLength={8}
+                value={userInfo.password}
+                className="border-2 border-pink-500 shadow-sm p-4 rounded-md outline-none focus:border-pink-700 w-64 placeholder-black"
+                placeholder="Password"
+                style={{ height: '100%' }}
+              />
+            </div>
+            <Link href="/forgot" className="flex justify-center w-full">
+              <p className="text-blue-500 hover:underline">Forgot Password?</p>
             </Link>
-            <Button type="submit">Login</Button>
+            <div className="flex justify-center w-full">
+              <Button
+                type="submit"
+                className="bg-pink-500 text-black border-2 border-pink-700 p-3 rounded-md hover:bg-pink-600 hover:text-white transition-all w-40"
+                style={{ fontSize: '120%', height: '100%' }}
+              >
+                Login
+              </Button>
+            </div>
           </form>
           <div>
             <p className="text-sm text-gray-500">
@@ -146,10 +156,8 @@ export default function Example() {
               </Link>
             </p>
           </div>
-      
         </div>
       </div>
-      {/* <Footer /> */}
     </>
   );
 }
