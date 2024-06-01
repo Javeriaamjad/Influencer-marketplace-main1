@@ -1501,6 +1501,484 @@
 // }
 //jnkdvdsjjnvsd nvjsdnvnsnjvjjnsvnsdjvjds
 
+// import { UploadButton } from "@/utils/uploadthing";
+// import { useState, useEffect } from "react";
+// import Image from "next/image";
+// import axios from "axios";
+
+// export default function Example() {
+//   const [userinfo, setUserinfo] = useState({
+//     name: "",
+//     username: "",
+//     email: "",
+//     role: "",
+//     profileImage: "",
+//     bannerImage: "",
+//     phone: "",
+//     city: "",
+//     state: "",
+//     Bio: "",
+//     category: [],
+//     description: "",
+//     platforms: [
+//       { platform: "instagram", followers: "", profile: "" },
+//       { platform: "youtube", followers: "", profile: "" },
+//     ],
+//     packages: [
+//       {
+//         platform: "instagram",
+//         followers: "1000",
+//         price: "1000",
+//         title: "Sample Package",
+//         description: "I will post your product on my Instagram",
+//         media: [],
+//       },
+//     ],
+//   });
+
+//   useEffect(() => {
+//     const fetchUserData = async () => {
+//       try {
+//         const storedUserData = JSON.parse(localStorage.getItem("user"));
+//         const token = storedUserData.token;
+//         const response = await fetch("/api/creator/creator", {
+//           headers: { Authorization: `Bearer ${token}` },
+//         });
+//         const responseData = await response.json();
+//         if (response.ok) {
+//           setUserinfo(responseData.user);
+//         } else {
+//           console.error("Error fetching user data:", responseData.error);
+//         }
+//       } catch (error) {
+//         console.error("Error fetching user data:", error);
+//       }
+//     };
+//     fetchUserData();
+//   }, []);
+
+//   const handleProfileImage = async (email, image) => {
+//     await fetch("/api/creator/profileImageupdate", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ email, profileImage: image }),
+//     })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         console.log(data);
+//       });
+//   };
+
+//   const handleBannerImage = async (email, image) => {
+//     await fetch("/api/creator/bannerimage", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ email, bannerImage: image }),
+//     })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         console.log(data);
+//       });
+//   };
+
+//   const handlePersonalInfo = async (e) => {
+//     e.preventDefault();
+//     await fetch("/api/creator/profileupdate", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({
+//         email: userinfo.email,
+//         name: userinfo.name,
+//         phone: userinfo.phone,
+//         city: userinfo.city,
+//         state: userinfo.state,
+//         Bio: userinfo.Bio,
+//         category: userinfo.category,
+//       }),
+//     })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         console.log(data);
+//       });
+//   };
+
+//   const handleContentInfo = async (e) => {
+//     e.preventDefault();
+//     await fetch("/api/creator/addcontentinfo", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({
+//         email: userinfo.email,
+//         category: userinfo.category,
+//         description: userinfo.description,
+//         platforms: userinfo.platforms,
+//       }),
+//     })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         console.log(data);
+//       });
+//   };
+
+//   const handlePackagesInfo = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await axios.post("/api/creator/addpackage", userinfo.packages);
+//       console.log(response.data);
+//     } catch (error) {
+//       console.error("Error saving package data:", error);
+//     }
+//   };
+
+//   const handleUsernameChange = (e) => {
+//     setUserinfo({ ...userinfo, username: e.target.value });
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-100 p-10">
+//       <div className="space-y-6">
+//         <div className="bg-white shadow sm:rounded-lg">
+//           <div className="px-4 py-5 sm:p-6">
+//             <div className="md:grid md:grid-cols-3 md:gap-6">
+//               <div className="md:col-span-1">
+//                 <h3 className="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
+//                 <p className="mt-1 text-sm text-gray-500">
+//                   Use a permanent address where you can receive mail.
+//                 </p>
+//               </div>
+//               <div className="mt-5 md:mt-0 md:col-span-2">
+//                 <div className="w-full block gap-5 items-center justify-between px-20">
+//                   <Image
+//                     src={userinfo.bannerImage || ""}
+//                     width={800}
+//                     height={200}
+//                     alt=""
+//                     className="w-full h-28 object-cover rounded-sm mx-auto m-2 bg-gray-300"
+//                   />
+//                   <UploadButton
+//                     endpoint="imageUploader"
+//                     onClientUploadComplete={async (res) => {
+//                       await handleBannerImage(userinfo.email, res[0].fileUrl);
+//                       setUserinfo({ ...userinfo, bannerImage: res[0].fileUrl });
+//                     }}
+//                     onUploadError={(error) => {
+//                       alert(`ERROR! ${error.message}`);
+//                     }}
+//                   />
+//                 </div>
+//                 <div className="w-full block gap-5 items-center justify-between px-20">
+//                   <Image
+//                     src={userinfo.profileImage || ""}
+//                     width={200}
+//                     height={200}
+//                     alt=""
+//                     className="w-28 h-28 object-cover rounded-full mx-auto m-2 bg-gray-300"
+//                   />
+//                   <UploadButton
+//                     endpoint="imageUploader"
+//                     onClientUploadComplete={async (res) => {
+//                       await handleProfileImage(userinfo.email, res[0].fileUrl);
+//                       setUserinfo({ ...userinfo, profileImage: res[0].fileUrl });
+//                     }}
+//                     onUploadError={(error) => {
+//                       alert(`ERROR! ${error.message}`);
+//                     }}
+//                   />
+//                 </div>
+//                 <form action="#" method="POST" onSubmit={handlePersonalInfo}>
+//                   <div className="grid grid-cols-6 gap-6">
+//                     <div className="col-span-6 sm:col-span-3">
+//                       <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+//                         User Name
+//                       </label>
+//                       <input
+//                         type="text"
+//                         name="username"
+//                         id="username"
+//                         value={userinfo.username}
+//                         autoComplete="name"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
+//                         onChange={handleUsernameChange}
+//                       />
+//                     </div>
+//                     <div className="col-span-6 sm:col-span-3">
+//                       <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+//                         Full Name
+//                       </label>
+//                       <input
+//                         type="text"
+//                         name="name"
+//                         id="name"
+//                         onChange={(e) => {
+//                           setUserinfo({ ...userinfo, name: e.target.value });
+//                         }}
+//                         value={userinfo.name}
+//                         autoComplete="name"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                       />
+//                     </div>
+//                     <div className="col-span-6 sm:col-span-3">
+//                       <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
+//                         Email address
+//                       </label>
+//                       <input
+//                         type="email"
+//                         name="email"
+//                         id="email"
+//                         onChange={(e) => {
+//                           setUserinfo({ ...userinfo, email: e.target.value });
+//                         }}
+//                         value={userinfo.email}
+//                         autoComplete="email"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
+//                       />
+//                     </div>
+//                     <div className="col-span-6 sm:col-span-3">
+//                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+//                         Phone No.
+//                       </label>
+//                       <input
+//                         type="text"
+//                         name="phone"
+//                         id="phone"
+//                         onChange={(e) => {
+//                           setUserinfo({ ...userinfo, phone: e.target.value });
+//                         }}
+//                         value={userinfo.phone}
+//                         autoComplete="phone"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                       />
+//                     </div>
+//                     <div className="col-span-6 sm:col-span-3">
+//                       <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+//                         City
+//                       </label>
+//                       <input
+//                         type="text"
+//                         name="city"
+//                         id="city"
+//                         onChange={(e) => {
+//                           setUserinfo({ ...userinfo, city: e.target.value });
+//                         }}
+//                         value={userinfo.city}
+//                         autoComplete="city"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                       />
+//                     </div>
+//                     <div className="col-span-6 sm:col-span-3">
+//                       <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+//                         State
+//                       </label>
+//                       <input
+//                         type="text"
+//                         name="state"
+//                         id="state"
+//                         onChange={(e) => {
+//                           setUserinfo({ ...userinfo, state: e.target.value });
+//                         }}
+//                         value={userinfo.state}
+//                         autoComplete="state"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                       />
+//                     </div>
+//                     <div className="col-span-6 sm:col-span-6 lg:col-span-6">
+//                       <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
+//                         Bio
+//                       </label>
+//                       <textarea
+//                         name="bio"
+//                         id="bio"
+//                         onChange={(e) => {
+//                           setUserinfo({ ...userinfo, Bio: e.target.value });
+//                         }}
+//                         value={userinfo.Bio}
+//                         autoComplete="bio"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                       />
+//                     </div>
+//                     <div className="col-span-6 sm:col-span-6 lg:col-span-6">
+//                       <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+//                         Category
+//                       </label>
+//                       <input
+//                         type="text"
+//                         name="category"
+//                         id="category"
+//                         onChange={(e) => {
+//                           setUserinfo({ ...userinfo, category: e.target.value });
+//                         }}
+//                         value={userinfo.category.join(", ")}
+//                         autoComplete="category"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                       />
+//                     </div>
+//                   </div>
+//                   <div className="px-4 py-3 text-right sm:px-6">
+//                     <button
+//                       type="submit"
+//                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+//                     >
+//                       Save
+//                     </button>
+//                   </div>
+//                 </form>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         <div className="bg-white shadow sm:rounded-lg">
+//           <div className="px-4 py-5 sm:p-6">
+//             <div className="md:grid md:grid-cols-3 md:gap-6">
+//               <div className="md:col-span-1">
+//                 <h3 className="text-lg font-medium leading-6 text-gray-900">Content Information</h3>
+//                 <p className="mt-1 text-sm text-gray-500">Add your content information here.</p>
+//               </div>
+//               <div className="mt-5 md:mt-0 md:col-span-2">
+//                 <form action="#" method="POST" onSubmit={handleContentInfo}>
+//                   <div className="grid grid-cols-6 gap-6">
+//                     <div className="col-span-6 sm:col-span-6 lg:col-span-6">
+//                       <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+//                         Description
+//                       </label>
+//                       <textarea
+//                         name="description"
+//                         id="description"
+//                         onChange={(e) => {
+//                           setUserinfo({ ...userinfo, description: e.target.value });
+//                         }}
+//                         value={userinfo.description}
+//                         autoComplete="description"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                       />
+//                     </div>
+//                     <div className="col-span-6 sm:col-span-6 lg:col-span-6">
+//                       <label htmlFor="platforms" className="block text-sm font-medium text-gray-700">
+//                         Platforms
+//                       </label>
+//                       <textarea
+//                         name="platforms"
+//                         id="platforms"
+//                         onChange={(e) => {
+//                           setUserinfo({ ...userinfo, platforms: JSON.parse(e.target.value) });
+//                         }}
+//                         value={JSON.stringify(userinfo.platforms)}
+//                         autoComplete="platforms"
+//                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                       />
+//                     </div>
+//                   </div>
+//                   <div className="px-4 py-3 text-right sm:px-6">
+//                     <button
+//                       type="submit"
+//                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+//                     >
+//                       Save
+//                     </button>
+//                   </div>
+//                 </form>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         <div className="bg-white shadow sm:rounded-lg">
+//           <div className="px-4 py-5 sm:p-6">
+//             <div className="md:grid md:grid-cols-3 md:gap-6">
+//               <div className="md:col-span-1">
+//                 <h3 className="text-lg font-medium leading-6 text-gray-900">Packages</h3>
+//                 <p className="mt-1 text-sm text-gray-500">Add your packages here.</p>
+//               </div>
+//               <div className="mt-5 md:mt-0 md:col-span-2">
+//                 <form action="#" method="POST" onSubmit={handlePackagesInfo}>
+//                   <div className="grid grid-cols-6 gap-6">
+//                     {userinfo.packages.map((pkg, index) => (
+//                       <div key={index} className="col-span-6 sm:col-span-6 lg:col-span-6">
+//                         <label htmlFor={`package-title-${index}`} className="block text-sm font-medium text-gray-700">
+//                           Title
+//                         </label>
+//                         <input
+//                           type="text"
+//                           name={`package-title-${index}`}
+//                           id={`package-title-${index}`}
+//                           onChange={(e) => {
+//                             const updatedPackages = [...userinfo.packages];
+//                             updatedPackages[index].title = e.target.value;
+//                             setUserinfo({ ...userinfo, packages: updatedPackages });
+//                           }}
+//                           value={pkg.title}
+//                           autoComplete={`package-title-${index}`}
+//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                         />
+//                         <label htmlFor={`package-description-${index}`} className="block text-sm font-medium text-gray-700">
+//                           Description
+//                         </label>
+//                         <textarea
+//                           name={`package-description-${index}`}
+//                           id={`package-description-${index}`}
+//                           onChange={(e) => {
+//                             const updatedPackages = [...userinfo.packages];
+//                             updatedPackages[index].description = e.target.value;
+//                             setUserinfo({ ...userinfo, packages: updatedPackages });
+//                           }}
+//                           value={pkg.description}
+//                           autoComplete={`package-description-${index}`}
+//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                         />
+//                         <label htmlFor={`package-price-${index}`} className="block text-sm font-medium text-gray-700">
+//                           Price
+//                         </label>
+//                         <input
+//                           type="text"
+//                           name={`package-price-${index}`}
+//                           id={`package-price-${index}`}
+//                           onChange={(e) => {
+//                             const updatedPackages = [...userinfo.packages];
+//                             updatedPackages[index].price = e.target.value;
+//                             setUserinfo({ ...userinfo, packages: updatedPackages });
+//                           }}
+//                           value={pkg.price}
+//                           autoComplete={`package-price-${index}`}
+//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                         />
+//                         <label htmlFor={`package-media-${index}`} className="block text-sm font-medium text-gray-700">
+//                           Media
+//                         </label>
+//                         <input
+//                           type="text"
+//                           name={`package-media-${index}`}
+//                           id={`package-media-${index}`}
+//                           onChange={(e) => {
+//                             const updatedPackages = [...userinfo.packages];
+//                             updatedPackages[index].media = e.target.value.split(",");
+//                             setUserinfo({ ...userinfo, packages: updatedPackages });
+//                           }}
+//                           value={pkg.media.join(", ")}
+//                           autoComplete={`package-media-${index}`}
+//                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+//                         />
+//                       </div>
+//                     ))}
+//                   </div>
+//                   <div className="px-4 py-3 text-right sm:px-6">
+//                     <button
+//                       type="submit"
+//                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+//                     >
+//                       Save
+//                     </button>
+//                   </div>
+//                 </form>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
 
 
 
@@ -1509,7 +1987,6 @@
 import { UploadButton } from "@/utils/uploadthing";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { EmailTwoTone } from "@mui/icons-material";
 
 export default function Example() {
   const [userinfo, setUserinfo] = useState({
@@ -1544,94 +2021,113 @@ export default function Example() {
     const fetchUserData = async () => {
       try {
         const storedUserData = JSON.parse(localStorage.getItem("user"));
+        if (!storedUserData) return;
+        
         const token = storedUserData.token;
         const response = await fetch("/api/creator/creator", {
           headers: { Authorization: `Bearer ${token}` },
         });
+
+        if (!response.ok) throw new Error("Network response was not ok");
+
         const responseData = await response.json();
-        if (response.ok) {
-          setUserinfo(responseData.user);
-        } else {
-          console.error("Error fetching user data:", responseData.error);
-        }
+        setUserinfo(responseData.user);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
+
     fetchUserData();
   }, []);
 
   const handleProfileImage = async (email, image) => {
-    await fetch("/api/creator/profileImageupdate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, profileImage: image }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+    try {
+      const response = await fetch("/api/creator/profileImageupdate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, profileImage: image }),
       });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error updating profile image:", error);
+    }
   };
 
   const handleBannerImage = async (email, image) => {
-    await fetch("/api/creator/bannerimage", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, bannerImage: image }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+    try {
+      const response = await fetch("/api/creator/bannerimage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, bannerImage: image }),
       });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error updating banner image:", error);
+    }
   };
 
   const handlePersonalInfo = async (e) => {
     e.preventDefault();
-    await fetch("/api/creator/profileupdate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: userinfo.email,
-        name: userinfo.name,
-        phone: userinfo.phone,
-        city: userinfo.city,
-        state: userinfo.state,
-        Bio: userinfo.Bio,
-        category: userinfo.category,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+    try {
+      const response = await fetch("/api/creator/profileupdate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: userinfo.email,
+          name: userinfo.name,
+          phone: userinfo.phone,
+          city: userinfo.city,
+          state: userinfo.state,
+          Bio: userinfo.Bio,
+          category: userinfo.category,
+        }),
       });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error updating personal info:", error);
+    }
   };
 
   const handleContentInfo = async (e) => {
     e.preventDefault();
-    await fetch("/api/creator/addcontentinfo", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: userinfo.email,
-        category: userinfo.category,
-        description: userinfo.description,
-        platforms: userinfo.platforms,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+    try {
+      const response = await fetch("/api/creator/addcontentinfo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: userinfo.email,
+          category: userinfo.category,
+          description: userinfo.description,
+          platforms: userinfo.platforms,
+        }),
       });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error updating content info:", error);
+    }
   };
 
   const handlePackagesInfo = async (e) => {
     e.preventDefault();
     try {
-      // Send a POST request to the API route with package data
-      const response = await axios.post('/api/creator/addpackage', packages,EmailTwoTone);
-      console.log(response.data); // Log the response from the API
+      const response = await fetch("/api/creator/addpackage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userinfo.packages),
+      });
+
+      const data = await response.json();
+      console.log(data);
     } catch (error) {
-      console.error('Error saving package data:', error);
+      console.error("Error saving package data:", error);
     }
   };
 
@@ -1639,26 +2135,15 @@ export default function Example() {
     setUserinfo({ ...userinfo, username: e.target.value });
   };
 
-  const handleMedia = async (email, mediaType, media) => {
-    await fetch("/api/creator/Videocontent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, media: media }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
-
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="space-y-6 p-10">
         <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
           <div className="md:grid md:grid-cols-3 md:gap-6">
-          
             <div className="md:col-span-1">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Personal Information
+              </h3>
               <p className="mt-1 text-sm text-gray-500">
                 Use a permanent address where you can receive mail.
               </p>
@@ -1705,7 +2190,10 @@ export default function Example() {
               <form action="#" method="POST" onSubmit={handlePersonalInfo}>
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="username"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       User Name
                     </label>
                     <input
@@ -1719,7 +2207,10 @@ export default function Example() {
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Full Name
                     </label>
                     <input
@@ -1735,7 +2226,10 @@ export default function Example() {
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="email-address"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Email address
                     </label>
                     <input
@@ -1751,274 +2245,102 @@ export default function Example() {
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                      Phone No.
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Phone
                     </label>
                     <input
                       type="text"
                       name="phone"
                       id="phone"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, phone: e.target.value });
-                      }}
                       value={userinfo.phone}
                       autoComplete="phone"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, phone: e.target.value });
+                      }}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       City
                     </label>
                     <input
                       type="text"
                       name="city"
                       id="city"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, city: e.target.value });
-                      }}
                       value={userinfo.city}
                       autoComplete="city"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, city: e.target.value });
+                      }}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="state"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       State
                     </label>
                     <input
                       type="text"
                       name="state"
                       id="state"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, state: e.target.value });
-                      }}
                       value={userinfo.state}
                       autoComplete="state"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, state: e.target.value });
+                      }}
                     />
                   </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="state" className="block text-sm font-medium text-gray-700">
-                     Bio
+                  <div className="col-span-6 sm:col-span-6">
+                    <label
+                      htmlFor="bio"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Bio
                     </label>
                     <textarea
-                      type="text"
-                      name="Bio"
-                      id="Bio"
-                      row = {3}
+                      name="bio"
+                      id="bio"
+                      value={userinfo.Bio}
+                      rows="3"
+                      className="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md"
                       onChange={(e) => {
                         setUserinfo({ ...userinfo, Bio: e.target.value });
                       }}
-                      value={userinfo.Bio}
-                      autoComplete="state"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
+                    ></textarea>
                   </div>
-                  
-                  <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                      Role
+                  <div className="col-span-6 sm:col-span-6">
+                    <label
+                      htmlFor="category"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Category
                     </label>
                     <input
                       type="text"
-                      name="role"
-                      id="role"
+                      name="category"
+                      id="category"
+                      value={userinfo.category.join(", ")}
+                      autoComplete="category"
+                      className="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md"
                       onChange={(e) => {
-                        setUserinfo({ ...userinfo, role: e.target.value });
+                        setUserinfo({
+                          ...userinfo,
+                          category: e.target.value.split(","),
+                        });
                       }}
-                      value={userinfo.role}
-                      autoComplete="role"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
                     />
                   </div>
-                </div>
-                <div className="pt-5">
-                  <div className="flex justify-end">
-                    <button
-                      type="button"
-                      className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
-          <div className="md:grid md:grid-cols-3 md:gap-6">
-            <div className="md:col-span-1">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">Content Information</h3>
-              <p className="mt-1 text-sm text-gray-500">Details about your content and platforms.</p>
-            </div>
-            <div className="mt-5 md:mt-0 md:col-span-2">
-              <form action="#" method="POST" onSubmit={handleContentInfo}>
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                      Description
-                    </label>
-                    <textarea
-                      name="description"
-                      id="description"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, description: e.target.value });
-                      }}
-                      value={userinfo.description}
-                      autoComplete="description"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
-                  {userinfo.platforms.map((platform, index) => (
-                    <div key={index} className="col-span-6 sm:col-span-3">
-                      <label htmlFor={`platform-${index}`} className="block text-sm font-medium text-gray-700">
-                        Platform
-                      </label>
-                      <input
-                        type="text"
-                        name={`platform-${index}`}
-                        id={`platform-${index}`}
-                        value={platform.platform}
-                        onChange={(e) => {
-                          const updatedPlatforms = [...userinfo.platforms];
-                          updatedPlatforms[index].platform = e.target.value;
-                          setUserinfo({ ...userinfo, platforms: updatedPlatforms });
-                        }}
-                        autoComplete={`platform-${index}`}
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      <label htmlFor={`followers-${index}`} className="block text-sm font-medium text-gray-700 mt-2">
-                        Followers
-                      </label>
-                      <input
-                        type="text"
-                        name={`followers-${index}`}
-                        id={`followers-${index}`}
-                        value={platform.followers}
-                        onChange={(e) => {
-                          const updatedPlatforms = [...userinfo.platforms];
-                          updatedPlatforms[index].followers = e.target.value;
-                          setUserinfo({ ...userinfo, platforms: updatedPlatforms });
-                        }}
-                        autoComplete={`followers-${index}`}
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      <label htmlFor={`profile-${index}`} className="block text-sm font-medium text-gray-700 mt-2">
-                        Profile
-                      </label>
-                      <input
-                        type="text"
-                        name={`profile-${index}`}
-                        id={`profile-${index}`}
-                        value={platform.profile}
-                        onChange={(e) => {
-                          const updatedPlatforms = [...userinfo.platforms];
-                          updatedPlatforms[index].profile = e.target.value;
-                          setUserinfo({ ...userinfo, platforms: updatedPlatforms });
-                        }}
-                        autoComplete={`profile-${index}`}
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
-          <div className="md:grid md:grid-cols-3 md:gap-6">
-            <div className="md:col-span-1">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">Packages</h3>
-              <p className="mt-1 text-sm text-gray-500">Details about your packages.</p>
-            </div>
-            <div className="mt-5 md:mt-0 md:col-span-2">
-              <form action="#" method="POST" onSubmit={handlePackagesInfo}>
-                <div className="grid grid-cols-6 gap-6">
-                  {userinfo.packages.map((pkg, index) => (
-                    <div key={index} className="col-span-6 sm:col-span-3">
-                      <label htmlFor={`package-title-${index}`} className="block text-sm font-medium text-gray-700">
-                        Package Title
-                      </label>
-                      <input
-                        type="text"
-                        name={`package-title-${index}`}
-                        id={`package-title-${index}`}
-                        value={pkg.title}
-                        onChange={(e) => {
-                          const updatedPackages = [...userinfo.packages];
-                          updatedPackages[index].title = e.target.value;
-                          setUserinfo({ ...userinfo, packages: updatedPackages });
-                        }}
-                        autoComplete={`package-title-${index}`}
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      <label htmlFor={`package-description-${index}`} className="block text-sm font-medium text-gray-700 mt-2">
-                        Package Description
-                      </label>
-                      <textarea
-                        name={`package-description-${index}`}
-                        id={`package-description-${index}`}
-                        value={pkg.description}
-                        onChange={(e) => {
-                          const updatedPackages = [...userinfo.packages];
-                          updatedPackages[index].description = e.target.value;
-                          setUserinfo({ ...userinfo, packages: updatedPackages });
-                        }}
-                        autoComplete={`package-description-${index}`}
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      <label htmlFor={`package-price-${index}`} className="block text-sm font-medium text-gray-700 mt-2">
-                        Package Price
-                      </label>
-                      <input
-                        type="text"
-                        name={`package-price-${index}`}
-                        id={`package-price-${index}`}
-                        value={pkg.price}
-                        onChange={(e) => {
-                          const updatedPackages = [...userinfo.packages];
-                          updatedPackages[index].price = e.target.value;
-                          setUserinfo({ ...userinfo, packages: updatedPackages });
-                        }}
-                        autoComplete={`package-price-${index}`}
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                      <label htmlFor={`package-media-${index}`} className="block text-sm font-medium text-gray-700 mt-2">
-                        Package Media
-                      </label>
-                      <input
-                        type="file"
-                        name={`package-media-${index}`}
-                        id={`package-media-${index}`}
-                        onChange={(e) => {
-                          const updatedPackages = [...userinfo.packages];
-                          updatedPackages[index].media = e.target.files[0];
-                          setUserinfo({ ...userinfo, packages: updatedPackages });
-                        }}
-                        autoComplete={`package-media-${index}`}
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  ))}
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                   <button
@@ -2034,9 +2356,9 @@ export default function Example() {
         </div>
       </div>
     </div>
-   
   );
 }
+
 
 
 
