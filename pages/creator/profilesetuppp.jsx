@@ -546,6 +546,11 @@
 //     </div>
 //   );
 // }
+
+////dubara se upar wala code hee
+
+
+
 // import { useState, useEffect } from 'react';
 
 // export default function Example() {
@@ -1981,7 +1986,7 @@
 
 
 
-
+/* 
 
 
 import { UploadButton } from "@/utils/uploadthing";
@@ -2366,8 +2371,531 @@ export default function Example() {
     </div>
   );
 }
+ */
 
 
 
 
 
+
+//////////////////////
+import { UploadButton } from "@/utils/uploadthing";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+
+export default function Example() {
+  const [userinfo, setUserinfo] = useState({
+    name: "",
+    username: "",
+    email: "",
+    role: "",
+    profileImage: "",
+    bannerImage: "",
+    phone: "",
+    city: "",
+    state: "",
+    category: [],
+    description: "",
+    platforms: [
+      {
+        platform: "instagram",
+        followers: "",
+        profile: "",
+      },
+      {
+        platform: "youtube",
+        followers: "",
+        profile: "",
+      },
+      {
+        platform: "facebook",
+        followers: "",
+        profile: "",
+      },
+    ],
+    packages: [
+      {
+        platform: "instagram",
+        followers: "1000",
+        price: "1000",
+        title: "Sample Package",
+        description: "I will post your product on my Instagram",
+        media: [],
+      },
+    ],
+  });
+
+  
+
+  useEffect(() => {
+    console.log("ccnjnjcjnncjn cjn")
+    const fetchUserData = async () => {
+      try {
+        const storedUserData = JSON.parse(localStorage.getItem("user"));
+        if (storedUserData) {
+          const token = storedUserData.token;
+          const response = await fetch("/api/creator/creator", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const responseData = await response.json();
+          if (response.ok) {
+            setUserinfo(responseData.user);
+            
+          } else {
+            console.error("Error fetching user data:", responseData.error);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  const handleProfileImage = async (email, image) => {
+    await fetch("/api/creator/profileImageupdate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, profileImage: image }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  const handleBannerImage = async (email, image) => {
+    await fetch("/api/creator/bannerimage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, bannerImage: image }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  const handlePersonalInfo = async (e) => {
+    e.preventDefault();
+    await fetch("/api/creator/profileupdate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: userinfo.email,
+        name: userinfo.name,
+        phone: userinfo.phone,
+        city: userinfo.city,
+        state: userinfo.state,
+        Bio: userinfo.Bio,
+        category: userinfo.category,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  const handleContentInfo = async (e) => {
+    e.preventDefault();
+    await fetch("/api/creator/addcontentinfo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: userinfo.email,
+        category: userinfo.category,
+        description: userinfo.description,
+        platforms: userinfo.platforms,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  const handlePackages = async (e) => {
+    e.preventDefault();
+    await fetch("/api/creator/addpackage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: userinfo.email, packages: userinfo.packages }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  const handleUsernameChange = (e) => {
+    setUserinfo({ ...userinfo, username: e.target.value });
+  };
+
+  
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <div className="space-y-6 p-10">
+        <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
+          <div className="md:grid md:grid-cols-3 md:gap-6">
+            <div className="md:col-span-1">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Use a permanent address where you can receive mail.
+              </p>
+            </div>
+            <div className="mt-5 md:mt-0 md:col-span-2">
+              <div className="w-full block gap-5 items-center justify-between px-20">
+                <Image
+                  src={userinfo.bannerImage || ""}
+                  width={800}
+                  height={200}
+                  alt=""
+                  className="w-[1000px] h-28 object-cover rounded-sm mx-auto m-2 bg-gray-300"
+                />
+                <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={async (res) => {
+                    await handleBannerImage(userinfo.email, res[0].fileUrl);
+                    setUserinfo({ ...userinfo, bannerImage: res[0].fileUrl });
+                  }}
+                  onUploadError={(error) => {
+                    alert(`ERROR! ${error.message}`);
+                  }}
+                />
+              </div>
+              <div className="w-full block gap-5 items-center justify-between px-20">
+                <Image
+                  src={userinfo.profileImage || ""}
+                  width={200}
+                  height={200}
+                  alt=""
+                  className="w-28 h-28 object-cover rounded-full mx-auto m-2 bg-gray-300"
+                />
+                <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={async (res) => {
+                    await handleProfileImage(userinfo.email, res[0].fileUrl);
+                    setUserinfo({ ...userinfo, profileImage: res[0].fileUrl });
+                  }}
+                  onUploadError={(error) => {
+                    alert(`ERROR! ${error.message}`);
+                  }}
+                />
+              </div>
+              <form action="#" method="POST" onSubmit={handlePersonalInfo}>
+                <div className="grid grid-cols-6 gap-6">
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                      User Name
+                    </label>
+                    <input
+                      type="text"
+                      name="username"
+                      id="username"
+                      value={userinfo.username}
+                      autoComplete="name"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
+                      onChange={handleUsernameChange}
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, name: e.target.value });
+                      }}
+                      value={userinfo.name}
+                      autoComplete="name"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
+                      Email address
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, email: e.target.value });
+                      }}
+                      value={userinfo.email}
+                      autoComplete="email"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                      Phone No.
+                    </label>
+                    <input
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, phone: e.target.value });
+                      }}
+                      value={userinfo.phone}
+                      autoComplete="phone"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      name="city"
+                      id="city"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, city: e.target.value });
+                      }}
+                      value={userinfo.city}
+                      autoComplete="address-level2"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+                      State
+                    </label>
+                    <input
+                      type="text"
+                      name="state"
+                      id="state"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, state: e.target.value });
+                      }}
+                      value={userinfo.state}
+                      autoComplete="address-level1"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="col-span-6">
+                    <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
+                      Bio
+                    </label>
+                    <textarea
+                      name="bio"
+                      id="bio"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, Bio: e.target.value });
+                      }}
+                      value={userinfo.Bio}
+                      rows="3"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    ></textarea>
+                  </div>
+                  <div className="col-span-6">
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+                      Category
+                    </label>
+                    <input
+                      type="text"
+                      name="category"
+                      id="category"
+                      onChange={(e) => {
+                        setUserinfo({ ...userinfo, category: e.target.value.split(",") });
+                      }}
+                      value={userinfo.category.join(",")}
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                  </div>
+                </div>
+                <div className="pt-5">
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
+        <div className="mt-5 md:mt-0 md:col-span-2">
+          
+      <form action="#" method="POST" onSubmit={handleContentInfo}>
+        <div className="grid grid-cols-6 gap-6">
+          <div className="col-span-6 sm:col-span-6">
+            <label className="block text-sm font-medium text-gray-700">Platforms</label>
+            {userinfo.platforms.map((platform, index) => (
+              <div key={index} className="grid grid-cols-6 gap-6">
+                <div className="col-span-2 sm:col-span-2">
+                  <input
+                    type="text"
+                    name="platform"
+                    id="platform"
+                    value={platform.platform}
+                    onChange={(e) => {
+                      const platforms = [...userinfo.platforms];
+                      platforms[index].platform = e.target.value;
+                      setUserinfo({ ...userinfo, platforms: platforms });
+                    }}
+                    placeholder="Platform"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="col-span-2 sm:col-span-2">
+                  <input
+                    type="text"
+                    name="followers"
+                    id="followers"
+                    value="insta"
+                    onChange={(e) => {
+                      const platforms = [...userinfo.platforms];
+                      platforms[index].followers = e.target.value;
+                      setUserinfo({ ...userinfo, platforms: platforms });
+                    }}
+                    placeholder="Followers"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="col-span-2 sm:col-span-2">
+                  <input
+                    type="text"
+                    name="profile"
+                    id="profile"
+                    value={platform.profile}
+                    onChange={(e) => {
+                      const platforms = [...userinfo.platforms];
+                      platforms[index].profile = e.target.value;
+                      setUserinfo({ ...userinfo, platforms: platforms });
+                    }}
+                    placeholder="Profile URL"
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="pt-5">
+          <div className="flex justify-end">
+           
+            <button
+              type="submit"
+              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </form>
+    
+    </div>
+    </div>
+        <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
+          <div className="md:grid md:grid-cols-3 md:gap-6">
+            <div className="md:col-span-1">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">Packages Information</h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Information about the packages you offer.
+              </p>
+            </div>
+            <div className="mt-5 md:mt-0 md:col-span-2">
+              <form action="#" method="POST" onSubmit={handlePackages}>
+                <div className="grid grid-cols-6 gap-6">
+                  {userinfo.packages.map((packageInfo, index) => (
+                    <div key={index} className="col-span-6 sm:col-span-3">
+                      <div className="mb-4">
+                        <label htmlFor={`packages[${index}].name`} className="block text-sm font-medium text-gray-700">
+                          Package Name
+                        </label>
+                        <input
+                          type="text"
+                          name={`packages[${index}].name`}
+                          id={`packages[${index}].name`}
+                          onChange={(e) => {
+                            const packages = [...userinfo.packages];
+                            packages[index].name = e.target.value;
+                            setUserinfo({ ...userinfo, packages });
+                          }}
+                          value={packageInfo.name}
+                          placeholder="Package Name"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label htmlFor={`packages[${index}].price`} className="block text-sm font-medium text-gray-700">
+                          Package Price
+                        </label>
+                        <input
+                          type="text"
+                          name={`packages[${index}].price`}
+                          id={`packages[${index}].price`}
+                          onChange={(e) => {
+                            const packages = [...userinfo.packages];
+                            packages[index].price = e.target.value;
+                            setUserinfo({ ...userinfo, packages });
+                          }}
+                          value={packageInfo.price}
+                          placeholder="Package Price"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label htmlFor={`packages[${index}].description`} className="block text-sm font-medium text-gray-700">
+                          Package Description
+                        </label>
+                        <textarea
+                          name={`packages[${index}].description`}
+                          id={`packages[${index}].description`}
+                          onChange={(e) => {
+                            const packages = [...userinfo.packages];
+                            packages[index].description = e.target.value;
+                            setUserinfo({ ...userinfo, packages });
+                          }}
+                          value={packageInfo.description}
+                          rows="3"
+                          placeholder="Package Description"
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        ></textarea>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="pt-5">
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
