@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -97,10 +96,19 @@ export default function Example() {
         pauseOnHover
         theme="light"
       />
-      <div className="h-screen flex justify-center items-center" style={{ backgroundImage: 'url("https://th.bing.com/th/id/R.3c2ffe4cdced7bd922e37e5b21ff32e2?rik=kC2DYUkF6yAU%2bw&pid=ImgRaw&r=0")', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backdropFilter: 'blur(70%)' }}>
-        <div className="bg-white bg-opacity-50 backdrop-blur-md p-4 rounded-lg shadow-lg w-2/5 flex flex-col items-center justify-center" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '20px' }}>
-          <h1 className="text-5xl font-semibold text-pink-900 mb-8 text-center">
-            Login
+      <div className="relative h-screen flex justify-center items-center" style={{ backgroundImage: 'url("purple.png")', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
+        {/* Colorful circles */}
+        <div className="absolute top-10 left-20 w-48 h-48 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full opacity-75"></div>
+
+        <div className="absolute top-20 left-44 w-32 h-32 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full opacity-75"></div>
+        <div className="absolute top-32 right-24 w-56 h-56 bg-gradient-to-r from-purple-400 to-pink-200 rounded-full opacity-75"></div>
+        <div className="absolute bottom-24 left-16 w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full opacity-75"></div>
+        <div className="absolute bottom-45 left-26 w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full opacity-75"></div>
+        <div className="absolute bottom-20 right-8 w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full opacity-75"></div>
+        
+        <div className="bg-white p-10 rounded-lg shadow-lg flex flex-col items-center justify-center relative z-10" style={{ boxShadow: '10px 10px 4px 6px pink', borderRadius: '20px', width: '400px' }}>
+          <h1 className="text-4xl font-semibold text-pink-700 mb-8 text-center animate-fade-in-down">
+            LOGIN
           </h1>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 w-full items-center">
             <div className="flex justify-center w-full">
@@ -111,9 +119,8 @@ export default function Example() {
                 required
                 type="email"
                 value={userInfo.email}
-                className="border-2 border-pink-500 shadow-sm p-4 rounded-md outline-none focus:border-pink-700 w-64 placeholder-black"
-                placeholder="Email address"
-                style={{ height: '100%' }}
+                className="border-b-2 border-gray-300 focus:border-gray-500 w-full p-2"
+                placeholder="Email"
               />
             </div>
             <div className="flex justify-center w-full">
@@ -125,37 +132,29 @@ export default function Example() {
                 required
                 minLength={8}
                 value={userInfo.password}
-                className="border-2 border-pink-500 shadow-sm p-4 rounded-md outline-none focus:border-pink-700 w-64 placeholder-black"
+                className="border-b-2 border-gray-300 focus:border-gray-500 w-full p-2"
                 placeholder="Password"
-                style={{ height: '100%' }}
               />
             </div>
-            <Link href="/forgot" className="flex justify-center w-full">
-              <p className="text-blue-500 hover:underline">Forgot Password?</p>
+            <Link href="/forgot" className="flex justify-center w-full text-sm text-gray-500 mt-2">
+              <p className="hover:underline">Forgot your password?</p>
             </Link>
-            <div className="flex justify-center w-full">
+            <div className="flex justify-between w-full mt-8">
+              <Button
+                className="bg-pink-600 text-white py-2 px-4  hover:bg-purple-700 transition-all w-full"
+                style={{ fontSize: '16px' }}
+              >
+                Register
+              </Button>
               <Button
                 type="submit"
-                className="bg-pink-500 text-black border-2 border-pink-700 p-3 rounded-md hover:bg-pink-600 hover:text-white transition-all w-40"
-                style={{ fontSize: '120%', height: '100%' }}
+                className="bg-purple-600 text-white py-2 px-4  hover:bg-pink-700 transition-all w-full"
+                style={{ fontSize: '16px' }}
               >
-                Login
+                Sign In
               </Button>
             </div>
           </form>
-          <div>
-            <p className="text-sm text-gray-500">
-              Don&#39;t have an account? Sign Up {" "}
-              <Link href="/brand/signup">
-              <span>As a </span>
-                <span className="text-blue-500 hover:underline">Brand {" "}</span>
-              </Link>
-              <Link href="/creator/signup">
-              
-              <span className="text-blue-500 hover:underline">Creator</span>
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
     </>

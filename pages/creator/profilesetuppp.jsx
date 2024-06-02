@@ -1987,6 +1987,7 @@
 import { UploadButton } from "@/utils/uploadthing";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Example() {
   const [userinfo, setUserinfo] = useState({
@@ -2262,6 +2263,13 @@ export default function Example() {
                         setUserinfo({ ...userinfo, phone: e.target.value });
                       }}
                     />
+                    <div>
+                  <Link href="/my-next-chat/app/page">
+                    <button className="text-blue-500 hover:text-blue-700">
+                      Chat
+                    </button>
+                  </Link>
+                </div>
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <label
