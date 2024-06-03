@@ -1,4 +1,3 @@
-
 // import { UploadButton } from "@/utils/uploadthing";
 // import { useState, useEffect } from "react";
 // import Image from "next/image";
@@ -485,7 +484,6 @@
 //                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 //                       />
 
-
 //                     </div>
 //                     <div className="col-span-6 sm:col-span-6">
 //                       <label htmlFor="description" className="block text-sm font-medium text-gray-700">
@@ -548,8 +546,6 @@
 // }
 
 ////dubara se upar wala code hee
-
-
 
 // import { useState, useEffect } from 'react';
 
@@ -1051,7 +1047,6 @@
 //       });
 //   };
 
-
 //   const handlePersonalInfo = async (e) => {
 //     e.preventDefault();
 //     await fetch("/api/creator/profileupdate", {
@@ -1064,7 +1059,7 @@
 //         city: userinfo.city,
 //         state: userinfo.state,
 //         Bio : userinfo.Bio,
-      
+
 //         category: userinfo.category,
 //       }),
 //     })
@@ -1120,13 +1115,13 @@
 //         console.log(data);
 //       });
 //   };
-  
 
 //   return (
 //     <div className="min-h-screen bg-gray-100">
 //       <div className="space-y-6 p-10">
 //         <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
-          {/* <div className="md:grid md:grid-cols-3 md:gap-6">
+{
+  /* <div className="md:grid md:grid-cols-3 md:gap-6">
             <div className="md:col-span-1">
               <h3 className="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
               <p className="mt-1 text-sm text-gray-500">
@@ -1322,7 +1317,8 @@
               </form>
             </div>
           </div>
-        </div> */}
+        </div> */
+}
 
 //         <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
 //           <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -1983,9 +1979,6 @@
 //   );
 // };
 
-
-
-
 /* 
 
 
@@ -2373,17 +2366,34 @@ export default function Example() {
 }
  */
 
-
-
-
-
-
 //////////////////////
 import { UploadButton } from "@/utils/uploadthing";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+
+const PLATFORM=[
+  {
+    platform: "instagram",
+    followers: "",
+    profile: "",
+  },
+  {
+    platform: "youtube",
+    followers: "",
+    profile: "",
+  },
+  {
+    platform: "facebook",
+    followers: "",
+    profile: "",
+  },
+]
+
+
+
 export default function Example() {
+ 
   const [userinfo, setUserinfo] = useState({
     name: "",
     username: "",
@@ -2396,23 +2406,7 @@ export default function Example() {
     state: "",
     category: [],
     description: "",
-    platforms: [
-      {
-        platform: "instagram",
-        followers: "",
-        profile: "",
-      },
-      {
-        platform: "youtube",
-        followers: "",
-        profile: "",
-      },
-      {
-        platform: "facebook",
-        followers: "",
-        profile: "",
-      },
-    ],
+
     packages: [
       {
         platform: "instagram",
@@ -2425,10 +2419,15 @@ export default function Example() {
     ],
   });
 
-  
+
+
+
+  useEffect(()=>{
+      setLoaded(true)
+  },[])
 
   useEffect(() => {
-    console.log("ccnjnjcjnncjn cjn")
+    console.log("ccnjnjcjnncjn cjn");
     const fetchUserData = async () => {
       try {
         const storedUserData = JSON.parse(localStorage.getItem("user"));
@@ -2440,7 +2439,6 @@ export default function Example() {
           const responseData = await response.json();
           if (response.ok) {
             setUserinfo(responseData.user);
-            
           } else {
             console.error("Error fetching user data:", responseData.error);
           }
@@ -2451,6 +2449,18 @@ export default function Example() {
     };
     fetchUserData();
   }, []);
+
+  const [loaded , setLoaded ] = useState()
+
+
+  
+  useEffect(()=>{
+      setLoaded(true)
+  },[])
+
+  if (!loaded) return null 
+
+
 
   const handleProfileImage = async (email, image) => {
     await fetch("/api/creator/profileImageupdate", {
@@ -2520,7 +2530,10 @@ export default function Example() {
     await fetch("/api/creator/addpackage", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: userinfo.email, packages: userinfo.packages }),
+      body: JSON.stringify({
+        email: userinfo.email,
+        packages: userinfo.packages,
+      }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -2532,15 +2545,15 @@ export default function Example() {
     setUserinfo({ ...userinfo, username: e.target.value });
   };
 
-  
-
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="space-y-6 p-10">
         <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
           <div className="md:grid md:grid-cols-3 md:gap-6">
             <div className="md:col-span-1">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Personal Information
+              </h3>
               <p className="mt-1 text-sm text-gray-500">
                 Use a permanent address where you can receive mail.
               </p>
@@ -2584,10 +2597,13 @@ export default function Example() {
                   }}
                 />
               </div>
-              <form action="#" method="POST" onSubmit={handlePersonalInfo}>
+              <form onSubmit={handlePersonalInfo}>
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="username"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       User Name
                     </label>
                     <input
@@ -2601,7 +2617,10 @@ export default function Example() {
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Full Name
                     </label>
                     <input
@@ -2617,7 +2636,10 @@ export default function Example() {
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="email-address"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Email address
                     </label>
                     <input
@@ -2633,7 +2655,10 @@ export default function Example() {
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Phone No.
                     </label>
                     <input
@@ -2649,7 +2674,10 @@ export default function Example() {
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       City
                     </label>
                     <input
@@ -2665,7 +2693,10 @@ export default function Example() {
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="state"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       State
                     </label>
                     <input
@@ -2681,7 +2712,10 @@ export default function Example() {
                     />
                   </div>
                   <div className="col-span-6">
-                    <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="bio"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Bio
                     </label>
                     <textarea
@@ -2696,7 +2730,10 @@ export default function Example() {
                     ></textarea>
                   </div>
                   <div className="col-span-6">
-                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="category"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Category
                     </label>
                     <input
@@ -2704,7 +2741,10 @@ export default function Example() {
                       name="category"
                       id="category"
                       onChange={(e) => {
-                        setUserinfo({ ...userinfo, category: e.target.value.split(",") });
+                        setUserinfo({
+                          ...userinfo,
+                          category: e.target.value.split(","),
+                        });
                       }}
                       value={userinfo.category.join(",")}
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -2731,84 +2771,105 @@ export default function Example() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
-        <div className="mt-5 md:mt-0 md:col-span-2">
-          
-      <form action="#" method="POST" onSubmit={handleContentInfo}>
-        <div className="grid grid-cols-6 gap-6">
-          <div className="col-span-6 sm:col-span-6">
-            <label className="block text-sm font-medium text-gray-700">Platforms</label>
-            {userinfo.platforms.map((platform, index) => (
-              <div key={index} className="grid grid-cols-6 gap-6">
-                <div className="col-span-2 sm:col-span-2">
-                  <input
-                    type="text"
-                    name="platform"
-                    id="platform"
-                    value={platform.platform}
-                    onChange={(e) => {
-                      const platforms = [...userinfo.platforms];
-                      platforms[index].platform = e.target.value;
-                      setUserinfo({ ...userinfo, platforms: platforms });
-                    }}
-                    placeholder="Platform"
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="col-span-2 sm:col-span-2">
-                  <input
-                    type="text"
-                    name="followers"
-                    id="followers"
-                    value="insta"
-                    onChange={(e) => {
-                      const platforms = [...userinfo.platforms];
-                      platforms[index].followers = e.target.value;
-                      setUserinfo({ ...userinfo, platforms: platforms });
-                    }}
-                    placeholder="Followers"
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="col-span-2 sm:col-span-2">
-                  <input
-                    type="text"
-                    name="profile"
-                    id="profile"
-                    value={platform.profile}
-                    onChange={(e) => {
-                      const platforms = [...userinfo.platforms];
-                      platforms[index].profile = e.target.value;
-                      setUserinfo({ ...userinfo, platforms: platforms });
-                    }}
-                    placeholder="Profile URL"
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  />
+          <div className="mt-5 md:mt-0 md:col-span-2">
+            <form onSubmit={handleContentInfo}>
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-6">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Platforms
+                  </label>
+                  {PLATFORM &&
+                    PLATFORM.map(({ platform }, index) => {
+                      return (
+                        <>
+                          <div
+                            key={index + 1}
+                            className="grid grid-cols-6 gap-6"
+                          >
+                            <div className="col-span-2 sm:col-span-2">
+                              <input
+                                type="text"
+                                name="platform"
+                                id="platform"
+                                value={platform}
+                                onChange={(e) => {
+                                  // const platforms = [...userinfo.platforms];
+                                  // platforms[index].platform = e.target.value;
+                                  // console.log(e?.target.value )
+                                  // setUserinfo({
+                                  //   ...userinfo,
+                                  //   platforms: platforms,
+                                  // });
+                                }}
+                                placeholder="Platform"
+                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                              />
+                            </div>
+                            <div className="col-span-2 sm:col-span-2">
+                              <input
+                                type="text"
+                                name="followers"
+                                id="followers"
+                                value={platform}
+                                onChange={(e) => {
+                                  const platforms = [...userinfo.platforms];
+                                  platforms[index].followers = e.target.value;
+                                  setUserinfo({
+                                    ...userinfo,
+                                    platforms: platforms,
+                                  });
+                                }}
+                                placeholder="Followers"
+                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                              />
+                            </div>
+                            <div className="col-span-2 sm:col-span-2">
+                              <input
+                                type="text"
+                                name="profile"
+                                id="profile"
+                                value={platform}
+                                onChange={(e) => {
+                                  const platforms = [...userinfo.platforms];
+                                  platforms[index].profile = e.target.value;
+                                  setUserinfo({
+                                    ...userinfo,
+                                    platforms: platforms,
+                                  });
+                                }}
+                                placeholder="Profile URL"
+                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                              />
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+
+                  {/* <h1>hello</h1> */}
                 </div>
               </div>
-            ))}
+              <div className="pt-5">
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
-        <div className="pt-5">
-          <div className="flex justify-end">
-           
-            <button
-              type="submit"
-              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </form>
-    
-    </div>
-    </div>
         <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
           <div className="md:grid md:grid-cols-3 md:gap-6">
             <div className="md:col-span-1">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">Packages Information</h3>
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Packages Information
+              </h3>
               <p className="mt-1 text-sm text-gray-500">
                 Information about the packages you offer.
               </p>
@@ -2819,7 +2880,10 @@ export default function Example() {
                   {userinfo.packages.map((packageInfo, index) => (
                     <div key={index} className="col-span-6 sm:col-span-3">
                       <div className="mb-4">
-                        <label htmlFor={`packages[${index}].name`} className="block text-sm font-medium text-gray-700">
+                        <label
+                          htmlFor={`packages[${index}].name`}
+                          className="block text-sm font-medium text-gray-700"
+                        >
                           Package Name
                         </label>
                         <input
@@ -2837,7 +2901,10 @@ export default function Example() {
                         />
                       </div>
                       <div className="mb-4">
-                        <label htmlFor={`packages[${index}].price`} className="block text-sm font-medium text-gray-700">
+                        <label
+                          htmlFor={`packages[${index}].price`}
+                          className="block text-sm font-medium text-gray-700"
+                        >
                           Package Price
                         </label>
                         <input
@@ -2855,7 +2922,10 @@ export default function Example() {
                         />
                       </div>
                       <div className="mb-4">
-                        <label htmlFor={`packages[${index}].description`} className="block text-sm font-medium text-gray-700">
+                        <label
+                          htmlFor={`packages[${index}].description`}
+                          className="block text-sm font-medium text-gray-700"
+                        >
                           Package Description
                         </label>
                         <textarea

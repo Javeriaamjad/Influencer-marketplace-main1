@@ -1,0 +1,20 @@
+Object.values([
+                    {
+                      platform: "instagram",
+                      followers: "",
+                      profile: "",
+                    },
+                    {
+                      platform: "youtube",
+                      followers: "",
+                      profile: "",
+                    },
+                    {
+                      platform: "facebook",
+                      followers: "",
+                      profile: "",
+                    },                                      
+                  ]
+                
+
+// it worked
