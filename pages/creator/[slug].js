@@ -7,8 +7,9 @@ import { useRouter } from "next/router";
 import { BiLogoInstagramAlt, BiLogoYoutube } from "react-icons/bi";
 
 export default function Page({ creator }) {
+  console.log(creator);
   const router = useRouter();
-  const { name, profileImage, category, city, state } = creator;
+  const {name, profileImage, category, city, state } = creator;
   console.log(creator);
   console.log(creator);
   const handleSubmit = () =>{
@@ -69,6 +70,16 @@ export default function Page({ creator }) {
               <p className="text-lg">{item.description}</p>
               <h1 className="text-lg font-bold">{item.platform}</h1>
               <h1 className="text-2xl font-bold">₹{item.price}</h1>
+              
+              <div>
+        <Image
+          src={item.media[0]}
+          height={80}
+          width={780}
+          alt=""
+          className="w-[10vw]"
+        />
+      </div>
             </div>
           ))}
         </div>
