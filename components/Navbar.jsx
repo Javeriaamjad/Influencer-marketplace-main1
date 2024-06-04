@@ -6,9 +6,6 @@ import { buttonVariants } from "./ui/button";
 import TextShine from "@/components/TextShine";
 import Image from "next/image";
 
-import styles from "./Navbar.module.css";
-import jwt_decode from "jwt-decode";
-
 const Navbar = () => {
   const router = useRouter();
   const [menu, setMenu] = useState("Explore");
@@ -48,23 +45,8 @@ const Navbar = () => {
     fetchUserData();
   }, []);
 
-  const handleProfileImage = async (email, image) => {
-    await fetch("/api/creator/profileImageupdate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        profileImage: image,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
-
+  
+ 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -72,6 +54,31 @@ const Navbar = () => {
         const token = storedUserData.token;
 
         const response = await fetch("/api/creator/creator", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const responseData = await response.json();
+        if (response.ok) {
+          setUserInfo(responseData.user);
+        } else {
+          console.error("Error fetching user data:", responseData.error);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const storedUserData = JSON.parse(localStorage.getItem("user"));
+        const token = storedUserData.token;
+
+        const response = await fetch("/api/brand/getbrand", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -105,7 +112,7 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex h-16 items-center justify-between border-b border-zinc-200 px-4">
           <Link href="/" className="flex z-40 font-bold items-center gap-x-2">
-            <Image src="/assets/influenzar.png" height={50} width={50}></Image>
+            <Image src="/assets/influenzar.png" height={50} width={50} alt="Logo"></Image>
             {/* <div className="h-8 w-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"></div>  */}
             <span className="text-xl">INFLUENZAR</span>
           </Link>
@@ -160,7 +167,7 @@ const Navbar = () => {
                   className={buttonVariants({ variant: "ghost", size: "sm" })}
                   onClick={() => setMenu("Profile")}
                 >
-                  {userInfo.profileImage ? (
+                  {userInfo && userInfo.profileImage ? (
                     <Image
                       src={userInfo.profileImage}
                       width={40}

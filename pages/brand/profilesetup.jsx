@@ -18,31 +18,25 @@ export default function Example() {
   
   
   useEffect(() => {
-    // Fetch user data when component mounts
+    console.log("ccnjnjcjnncjn cjn");
     const fetchUserData = async () => {
       try {
-        
-        
-        const storedUserData = JSON.parse(localStorage.getItem('user'));
-        const token = storedUserData.token;
-
-
-        console.log("storedUserData",token)
-        const response = await fetch('/api/brand/getbrand', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const responseData = await response.json(); // Parse response JSON
-        console.log('Response data:', responseData); // Log response data
-        if (response.ok) {
-          setUserInfo(responseData.user);
-        } else {
-          // Handle non-successful response (e.g., 404, 401)
-          console.error('Error fetching user data:', responseData.error);
+        const storedUserData = JSON.parse(localStorage.getItem("user"));
+        if (storedUserData) {
+          const token = storedUserData.token;
+          console.log("brand",token)
+          const response = await fetch('/api/brand/getbrand', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const responseData = await response.json();
+          if (response.ok) {
+            setUserInfo(responseData.user);
+          } else {
+            console.error("Error fetching user data:", responseData.error);
+          }
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
     fetchUserData();
