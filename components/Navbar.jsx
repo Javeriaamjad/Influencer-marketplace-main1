@@ -1,95 +1,3 @@
-// import Link from "next/link";
-
-// import MaxWidthWrapper from "./MaxWidthWrapper";
-// import { buttonVariants } from "./ui/button";
-// import TextShine from "@/components/TextShine";
-// import { useState } from "react";
-// import styles from "./Navbar.module.css";
-
-// const Navbar = () => {
-//     const [Menu,setMenu]= useState("Explore");
-//   return (
-//     <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
-//       <MaxWidthWrapper>
-
-//         <div className='flex h-14 items-center justify-between border-b border-zinc-200'>
-//           <Link href='/' className='flex z-40 font-semibold items-center justify-center gap-x-2 rounded-md'>
-//             <div className='h-5 w-5 bg-black'></div>
-//             <span>INFLUENZAR</span>
-//           </Link>
-
-//           <div className="hidden items-center space-x-4 sm:flex">
-//             <Link
-//               href="/explore"
-//               className={buttonVariants({
-//                 variant: "ghost",
-//                 size: "sm",
-//               })}
-//               onClick={()=>{setMenu("How It Works")}}
-//             >
-//               Explore {Menu==='Explore'?<hr/>:<></>}
-//             </Link>
-//             <Link
-
-//               href="./creator/profilesetup"
-//               className={buttonVariants({
-//                 variant: "ghost",
-//                 size: "sm",
-//               })}
-//               onClick={()=>{setMenu("profile")}}
-//             >
-//               profile {Menu==='How It Works'?<hr/>:<></>}
-//             </Link>
-//             <Link
-//               href="/#howitworks"
-//               className={buttonVariants({
-//                 variant: "ghost",
-//                 size: "sm",
-//               })}
-//               onClick={()=>{setMenu("How It Works")}}
-//             >
-//               How It Works {Menu==='How It Works'?<hr/>:<></>}
-//             </Link>
-//             <Link
-//               href="/login"
-//               className={buttonVariants({
-//                 variant: "ghost",
-//                 size: "sm",
-//               })}
-//               onClick={()=>{setMenu("How It Works")}}
-//             >
-//               Login {Menu==='Login'?<hr/>:<></>}
-//             </Link>
-//             <Link
-//               href="/brand/signup"
-//               className={buttonVariants({
-//                 variant: "ghost",
-//                 size: "sm",
-//               })}
-
-//             >
-//               <TextShine text={"Join as Brand"} />
-//             </Link>
-
-//             <Link
-//               href="/creator/signup"
-//               className={buttonVariants({
-//                 variant: "ghost",
-//                 size: "sm",
-//               })}
-
-//             >
-//               <TextShine text={"Join as Creator"} />
-//             </Link>
-//           </div>
-//         </div>
-//       </MaxWidthWrapper>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -97,14 +5,15 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
 import TextShine from "@/components/TextShine";
 import Image from "next/image";
+
 import styles from "./Navbar.module.css";
 import jwt_decode from "jwt-decode";
 
 const Navbar = () => {
   const router = useRouter();
   const [menu, setMenu] = useState("Explore");
-  const [status, setStatus] = useState(false); // State to indicate user login status
-  const [userInfo, setUserInfo] = useState([]); // State to store user info
+  const [status, setStatus] = useState(false); 
+  const [userInfo, setUserInfo] = useState([]); 
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -196,8 +105,9 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex h-16 items-center justify-between border-b border-zinc-200 px-4">
           <Link href="/" className="flex z-40 font-bold items-center gap-x-2">
-            <div className="h-8 w-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"></div>
-            <span className="text-xl">INFLUENZAR</span>
+            <img src="/assets/influ.png" width={100} height={120} className="rounded-full shadow-md" /> 
+             {/* <div className="h-8 w-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"></div>  */}
+            {/* <span className="text-xl">INFLUENZAR</span> */}
           </Link>
 
           <div className="hidden sm:flex items-center space-x-6">

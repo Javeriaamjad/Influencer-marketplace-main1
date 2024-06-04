@@ -14,6 +14,8 @@ const CreatorSchema = new mongoose.Schema({
     description: { type: String, default: "" },
     Bio: { type: String, default: "" },
     media: { type: Array, default: [] },
+    price: { type: Number, default: 0 },
+    title: { type: String, default: "" },
     chats: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
         default: [],
@@ -25,7 +27,8 @@ const CreatorSchema = new mongoose.Schema({
     packages: { type: Array, default: [] },
     rating: { type: Number, default: 0 },
     reviews: { type: Array, default: [] },
-    price: { type: Number, default: 0 }, // Modified the default value to be a number
+    
+     // Modified the default value to be a number
     sample: { type: Array, default: [] },
 }, { timestamps: true });
 
