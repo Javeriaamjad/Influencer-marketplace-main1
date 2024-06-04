@@ -12,9 +12,9 @@ export default function Page({ creator }) {
   const {name, profileImage, category, city, state } = creator;
   console.log(creator);
   console.log(creator);
-  const handleSubmit = () =>{
-    router.push('/chats')
-  }
+  const handleSubmit = () => {
+    router.push("/chats");
+  };
 
   return (
     <div className="w-3/4 mx-auto flex flex-col gap-y-3">
@@ -54,7 +54,9 @@ export default function Page({ creator }) {
           </div>
         </div>
         <div>
-          <Button className="ml-auto" onClick = {handleSubmit}>Start Deal</Button>
+          <Link href="/my-next-chat/app/page">
+            <Button>Start Deal</Button>
+          </Link>
         </div>
       </div>
       <div>

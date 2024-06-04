@@ -12,8 +12,8 @@ import jwt_decode from "jwt-decode";
 const Navbar = () => {
   const router = useRouter();
   const [menu, setMenu] = useState("Explore");
-  const [status, setStatus] = useState(false); 
-  const [userInfo, setUserInfo] = useState([]); 
+  const [status, setStatus] = useState(false);
+  const [userInfo, setUserInfo] = useState([]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -105,38 +105,80 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex h-16 items-center justify-between border-b border-zinc-200 px-4">
           <Link href="/" className="flex z-40 font-bold items-center gap-x-2">
-            <img src="/assets/influ.png" width={100} height={120} className="rounded-full shadow-md" /> 
-             {/* <div className="h-8 w-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"></div>  */}
-            {/* <span className="text-xl">INFLUENZAR</span> */}
+            <Image src="/assets/influenzar.png" height={50} width={50}></Image>
+            {/* <div className="h-8 w-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"></div>  */}
+            <span className="text-xl">INFLUENZAR</span>
           </Link>
 
           <div className="hidden sm:flex items-center space-x-6">
-            <Link href="/explore" className={buttonVariants({ variant: "ghost", size: "sm" })} onClick={() => setMenu("Explore")}>
-              Explore {menu === "Explore" ? <hr className="border-b-2 border-pink-500" /> : null}
+            <Link
+              href="/explore"
+              className={buttonVariants({ variant: "ghost", size: "sm" })}
+              onClick={() => setMenu("Explore")}
+            >
+              Explore{" "}
+              {menu === "Explore" ? (
+                <hr className="border-b-2 border-pink-500" />
+              ) : null}
             </Link>
-            <Link href="/#howitworks" className={buttonVariants({ variant: "ghost", size: "sm" })} onClick={() => setMenu("How It Works")}>
-              How It Works {menu === "How It Works" ? <hr className="border-b-2 border-pink-500" /> : null}
+            <Link
+              href="/#howitworks"
+              className={buttonVariants({ variant: "ghost", size: "sm" })}
+              onClick={() => setMenu("How It Works")}
+            >
+              Home{" "}
+              {menu === "How It Works" ? (
+                <hr className="border-b-2 border-pink-500" />
+              ) : null}
             </Link>
-            <Link href="/login" className={buttonVariants({ variant: "ghost", size: "sm" })} onClick={() => setMenu("Login")}>
-              Login {menu === "Login" ? <hr className="border-b-2 border-pink-500" /> : null}
+            <Link
+              href="/login"
+              className={buttonVariants({ variant: "ghost", size: "sm" })}
+              onClick={() => setMenu("Login")}
+            >
+              Login{" "}
+              {menu === "Login" ? (
+                <hr className="border-b-2 border-pink-500" />
+              ) : null}
             </Link>
-            <Link href="/brand/signup" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+            <Link
+              href="/brand/signup"
+              className={buttonVariants({ variant: "ghost", size: "sm" })}
+            >
               <TextShine text={"Join as Brand"} />
             </Link>
-            <Link href="/creator/signup" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+            <Link
+              href="/creator/signup"
+              className={buttonVariants({ variant: "ghost", size: "sm" })}
+            >
               <TextShine text={"Join as Creator"} />
             </Link>
             {status && (
               <>
-                <Link href={userProfileSetupLink()} className={buttonVariants({ variant: "ghost", size: "sm" })} onClick={() => setMenu("Profile")}>
+                <Link
+                  href={userProfileSetupLink()}
+                  className={buttonVariants({ variant: "ghost", size: "sm" })}
+                  onClick={() => setMenu("Profile")}
+                >
                   {userInfo.profileImage ? (
-                    <Image src={userInfo.profileImage} width={40} height={40} alt="Profile Image" className="rounded-full shadow-md" />
+                    <Image
+                      src={userInfo.profileImage}
+                      width={40}
+                      height={40}
+                      alt="Profile Image"
+                      className="rounded-full shadow-md"
+                    />
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-gray-300"></div>
                   )}
-                  {menu === "Profile" ? <hr className="border-b-2 border-pink-500" /> : null}
+                  {menu === "Profile" ? (
+                    <hr className="border-b-2 border-pink-500" />
+                  ) : null}
                 </Link>
-                <button className={buttonVariants({ variant: "ghost", size: "sm" })} onClick={handleLogout}>
+                <button
+                  className={buttonVariants({ variant: "ghost", size: "sm" })}
+                  onClick={handleLogout}
+                >
                   Logout
                 </button>
               </>
@@ -152,7 +194,14 @@ export default Navbar;
 
 <style jsx>{`
   .textShine {
-    background: linear-gradient(to right, #f72585, #b5179e, #7209b7, #560bad, #480ca8);
+    background: linear-gradient(
+      to right,
+      #f72585,
+      #b5179e,
+      #7209b7,
+      #560bad,
+      #480ca8
+    );
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
@@ -170,8 +219,7 @@ export default Navbar;
       background-position: 0% 50%;
     }
   }
-`}</style>
-
+`}</style>;
 
 /*import Link from "next/link";
 import { useRouter } from "next/router";
