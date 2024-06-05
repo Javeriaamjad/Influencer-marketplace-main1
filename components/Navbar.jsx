@@ -112,7 +112,7 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex h-16 items-center justify-between border-b border-zinc-200 px-4">
           <Link href="/" className="flex z-40 font-bold items-center gap-x-2">
-            <Image src="/assets/influenzar.png" height={50} width={50} alt="Logo"></Image>
+            <Image src="/assets/logo.jpg" height={60} width={70} alt="Logo"></Image>
             {/* <div className="h-8 w-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"></div>  */}
             <span className="text-xl">INFLUENZAR</span>
           </Link>

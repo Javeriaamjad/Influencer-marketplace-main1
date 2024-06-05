@@ -194,231 +194,231 @@ export default function Example() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen linear bg-gradient-to-r from-purple-500 via-pink-200 to-black-100 animate-gradient-x">
       <div className="space-y-6 p-10">
-        <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
-          <div className="md:grid md:grid-cols-3 md:gap-6">
-            <div className="md:col-span-1">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Personal Information
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Use a permanent address where you can receive mail.
-              </p>
+  <div className="bg-white px-4 py-5 sm:rounded-lg sm:p-6 shadow">
+    <div className="md:grid md:grid-cols-3 md:gap-6">
+      <div className="md:col-span-1">
+        <h3 className="text-lg font-medium leading-6 text-gray-900">
+          Personal Information
+        </h3>
+        <p className="mt-1 text-sm text-gray-500">
+          🌟 Unveil Your Unique Story! 🌟 Share your personal details to create a profile that's as unique as you are.
+        </p>
+      </div>
+      <div className="mt-5 md:mt-0 md:col-span-2">
+        <div className="w-full flex gap-5 items-center justify-center px-20">
+          <img
+            src={userinfo.bannerImage || ""}
+            alt=""
+            className="w-[1000px] h-28 object-cover rounded-sm mx-auto m-2 bg-gray-300"
+          />
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={async (res) => {
+              await handleBannerImage(userinfo.email, res[0].fileUrl);
+              setUserinfo({ ...userinfo, bannerImage: res[0].fileUrl });
+            }}
+            onUploadError={(error) => {
+              alert(`ERROR! ${error.message}`);
+            }}
+            className = "bg-black-200"
+          />
+        </div>
+        <div className="w-full flex gap-5 items-center justify-center px-20 mt-6">
+          <img
+            src={userinfo.profileImage || ""}
+            alt=""
+            className="w-28 h-28 object-cover rounded-full mx-auto m-2 bg-gray-300"
+          />
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={async (res) => {
+              await handleProfileImage(userinfo.email, res[0].fileUrl);
+              setUserinfo({ ...userinfo, profileImage: res[0].fileUrl });
+            }}
+            onUploadError={(error) => {
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
+        </div>
+        <form onSubmit={handlePersonalInfo} className="mt-6">
+          <div className="grid grid-cols-6 gap-6">
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700"
+              >
+                User Name
+              </label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                value={userinfo.username}
+                autoComplete="name"
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
+                onChange={handleUsernameChange}
+                disabled
+              />
             </div>
-            <div className="mt-5 md:mt-0 md:col-span-2">
-              <div className="w-full block gap-5 items-center justify-between px-20">
-                <Image
-                  src={userinfo.bannerImage || ""}
-                  width={800}
-                  height={200}
-                  alt=""
-                  className="w-[1000px] h-28 object-cover rounded-sm mx-auto m-2 bg-gray-300"
-                />
-                <UploadButton
-                  endpoint="imageUploader"
-                  onClientUploadComplete={async (res) => {
-                    await handleBannerImage(userinfo.email, res[0].fileUrl);
-                    setUserinfo({ ...userinfo, bannerImage: res[0].fileUrl });
-                  }}
-                  onUploadError={(error) => {
-                    alert(`ERROR! ${error.message}`);
-                  }}
-                />
-              </div>
-              <div className="w-full block gap-5 items-center justify-between px-20">
-                <Image
-                  src={userinfo.profileImage || ""}
-                  width={200}
-                  height={200}
-                  alt=""
-                  className="w-28 h-28 object-cover rounded-full mx-auto m-2 bg-gray-300"
-                />
-                <UploadButton
-                  endpoint="imageUploader"
-                  onClientUploadComplete={async (res) => {
-                    await handleProfileImage(userinfo.email, res[0].fileUrl);
-                    setUserinfo({ ...userinfo, profileImage: res[0].fileUrl });
-                  }}
-                  onUploadError={(error) => {
-                    alert(`ERROR! ${error.message}`);
-                  }}
-                />
-              </div>
-              <form onSubmit={handlePersonalInfo}>
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="username"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      User Name
-                    </label>
-                    <input
-                      type="text"
-                      name="username"
-                      id="username"
-                      value={userinfo.username}
-                      autoComplete="name"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
-                      onChange={handleUsernameChange}
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, name: e.target.value });
-                      }}
-                      value={userinfo.name}
-                      autoComplete="name"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="email-address"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email address
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, email: e.target.value });
-                      }}
-                      value={userinfo.email}
-                      autoComplete="email"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="phone"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Phone No.
-                    </label>
-                    <input
-                      type="text"
-                      name="phone"
-                      id="phone"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, phone: e.target.value });
-                      }}
-                      value={userinfo.phone}
-                      autoComplete="phone"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="city"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      name="city"
-                      id="city"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, city: e.target.value });
-                      }}
-                      value={userinfo.city}
-                      autoComplete="address-level2"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="state"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      name="state"
-                      id="state"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, state: e.target.value });
-                      }}
-                      value={userinfo.state}
-                      autoComplete="address-level1"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
-                  <div className="col-span-6">
-                    <label
-                      htmlFor="bio"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Bio
-                    </label>
-                    <textarea
-                      name="bio"
-                      id="bio"
-                      onChange={(e) => {
-                        setUserinfo({ ...userinfo, Bio: e.target.value });
-                      }}
-                      value={userinfo.Bio}
-                      rows="3"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    ></textarea>
-                  </div>
-                  <div className="col-span-6">
-                    <label
-                      htmlFor="category"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Category
-                    </label>
-                    <input
-                      type="text"
-                      name="category"
-                      id="category"
-                      onChange={(e) => {
-                        setUserinfo({
-                          ...userinfo,
-                          category: e.target.value.split(","),
-                        });
-                      }}
-                      value={userinfo.category.join(",")}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
-                </div>
-                <div className="pt-5">
-                  <div className="flex justify-end">
-                    <button
-                      type="button"
-                      className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </form>
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                onChange={(e) => {
+                  setUserinfo({ ...userinfo, name: e.target.value });
+                }}
+                value={userinfo.name}
+                autoComplete="name"
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="email-address"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email address
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                onChange={(e) => {
+                  setUserinfo({ ...userinfo, email: e.target.value });
+                }}
+                value={userinfo.email}
+                autoComplete="email"
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
+                disabled
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Phone No.
+              </label>
+              <input
+                type="text"
+                name="phone"
+                id="phone"
+                onChange={(e) => {
+                  setUserinfo({ ...userinfo, phone: e.target.value });
+                }}
+                value={userinfo.phone}
+                autoComplete="phone"
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="city"
+                className="block text-sm font-medium text-gray-700"
+              >
+                City
+              </label>
+              <input
+                type="text"
+                name="city"
+                id="city"
+                onChange={(e) => {
+                  setUserinfo({ ...userinfo, city: e.target.value });
+                }}
+                value={userinfo.city}
+                autoComplete="address-level2"
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="state"
+                className="block text-sm font-medium text-gray-700"
+              >
+                State
+              </label>
+              <input
+                type="text"
+                name="state"
+                id="state"
+                onChange={(e) => {
+                  setUserinfo({ ...userinfo, state: e.target.value });
+                }}
+                value={userinfo.state}
+                autoComplete="address-level1"
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6">
+              <label
+                htmlFor="bio"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Bio
+              </label>
+              <textarea
+                name="bio"
+                id="bio"
+                onChange={(e) => {
+                  setUserinfo({ ...userinfo, Bio: e.target.value });
+                }}
+                value={userinfo.Bio}
+                rows="3"
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              ></textarea>
+            </div>
+            <div className="col-span-6">
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Category
+              </label>
+              <input
+                type="text"
+                name="category"
+                id="category"
+                onChange={(e) => {
+                  setUserinfo({
+                    ...userinfo,
+                    category: e.target.value.split(","),
+                  });
+                }}
+                value={userinfo.category.join(",")}
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
             </div>
           </div>
-        </div>
+          <div className="pt-5">
+            <div className="flex justify-end">
+              <button
+                type="button"
+                className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+
 
 
         <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -672,6 +672,34 @@ export default function Example() {
     </div>
         </div>
       </div>
+      <style jsx>{`
+                
+                .animate-fade-in-down {
+                  animation: fade-in-down 1s ease-out;
+              }
+              @keyframes fade-in-down {
+                  0% {
+                      opacity: 0;
+                      transform: translateY(-20px);
+                  }
+                  100% {
+                      opacity: 1;
+                      transform: translateY(0);
+                  }
+              }
+              .animate-gradient-x {
+                  background-size: 200% 200%;
+                  animation: gradient-x 15s ease infinite;
+              }
+              @keyframes gradient-x {
+                  0% { background-position: 0% 50%; }
+                  50% { background-position: 100% 50%; }
+                  100% { background-position: 0% 50%; }
+              }
+               
+            `}</style>
     </div>
+    </div>
+
   );
 }
