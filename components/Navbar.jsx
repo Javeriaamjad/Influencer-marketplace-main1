@@ -111,8 +111,8 @@ const Navbar = () => {
     <nav className="sticky h-16 inset-x-0 top-0 z-50 w-full border-b border-gray-200 bg-white/90 backdrop-blur-lg shadow-lg">
       <MaxWidthWrapper>
         <div className="flex h-16 items-center justify-between border-b border-zinc-200 px-4">
-          <Link href="/" className="flex z-40 font-bold items-center gap-x-2">
-            <Image src="/assets/logo.jpg" height={60} width={70} alt="Logo"></Image>
+          <Link href="/explore" className="flex z-40 font-bold items-center gap-x-2">
+            <Image src="/assets/logos.png" height={50} width={50} alt="Logo"></Image>
             {/* <div className="h-8 w-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"></div>  */}
             <span className="text-xl">INFLUENZAR</span>
           </Link>
@@ -148,6 +148,7 @@ const Navbar = () => {
                 <hr className="border-b-2 border-pink-500" />
               ) : null}
             </Link>
+            
             <Link
               href="/brand/signup"
               className={buttonVariants({ variant: "ghost", size: "sm" })}
