@@ -15,6 +15,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     router.push("/login");
+    window.location.reload();
   };
 
   const [userRole, setUserRole] = useState(false);
