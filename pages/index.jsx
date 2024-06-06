@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-//import HowItWorks from '@/components/home/HowItWorks';
+
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 import HomeCard from '@/components/home/HomeCard';
 import mongoose from 'mongoose';
@@ -10,6 +10,20 @@ import Dropdown from '../components/Dropdown';
 const Index = ({ creator }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   console.log(selectedCategory);
+
+  const followerRanges = {
+    "1k to 10k": { min: 1000, max: 10000 },
+    "10k to 100k": { min: 10000, max: 100000 },
+    "100k to 1M": { min: 100000, max: 1000000 },
+  };
+
+  const parseFollowerRange = (range) => followerRanges[range];
+
+  const filterByFollowerRange = (item, range) => {
+    const { min, max } = parseFollowerRange(range) || {}; 
+    return item.followers >= min && item.followers <= max;
+  };
+
 
   const filteredCreators = selectedCategory
     ? creator.filter((item) => item.category.includes(selectedCategory))
@@ -58,6 +72,8 @@ const Index = ({ creator }) => {
             </div>
             <div>
               <Dropdown onSelectCategory={setSelectedCategory} />
+              <FollowersDropDown onSelectFollower={setSelectedFollowerRange} />
+
             </div>
           </div>
 
