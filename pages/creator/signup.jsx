@@ -276,7 +276,7 @@ export default function Example() {
                         position: "top-left",
                         autoClose: 5000,
                         hideProgressBar: false,
-                        closeOnClick,
+                        closeOnClick:true,
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined,
