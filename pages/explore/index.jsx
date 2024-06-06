@@ -151,6 +151,8 @@ const Index = ({ creator }) => {
 };
 
 export default Index;
+
+
 export async function getServerSideProps({ params }) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGODB_URI);

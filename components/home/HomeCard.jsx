@@ -1,34 +1,30 @@
 import Image from 'next/image';
 
-const HomeCard = ({ imageLink, platform, price, categories }) => {
+const HomeCard = ({ name, imageLink, platform, price, categories }) => {
   return (
-    <div className='rounded-md'>
-      <Image
-        src={imageLink}
-        alt='product preview'
-        width={280}
-        height={280}
-        quality={100}
-        className='rounded-lg bg-white p-2 sm:p-auto md:p-auto h-[300px] object-cover shadow-md ring-1 ring-gray-900/10'
-      />
-      <div className='flex justify-between'>
-        <p className='text-slate-700 text-sm'>{platform}</p>
-        <p>₹{price}</p>
-      </div>
-      <div className='flex max-w-[250px] flex-wrap'>
-        {categories.map((category, idx) => {
-          return category == categories[categories.length - 1] ? (
-            <span key={idx} className='text-slate-500 text-sm'>
-              {' '}
+    <div className="rounded-lg bg-gradient-to-r from-purple-300 via-pink-500 to-purple-400 p-1 transition-transform transform hover:scale-105 duration-300 ease-in-out shadow-lg">
+      <div className="bg-white rounded-md p-4">
+        <Image
+          src={imageLink}
+          alt="product preview"
+          width={280}
+          height={280}
+          quality={100}
+          className="rounded-lg bg-white h-[300px] object-cover shadow-md ring-1 ring-gray-900/10"
+        />
+        <div className="flex justify-between mt-2">
+          <p className="font-bold text-gray-800">{name}</p>
+          <p className="text-sm text-gray-600">{platform}</p>
+          <p className="text-blue-600 font-bold">₹{price}</p>
+        </div>
+        <div className="flex flex-wrap mt-1">
+          {categories.map((category, idx) => (
+            <span key={idx} className="text-sm text-gray-500 mr-1">
               {category}
+              {idx < categories.length - 1 && ','}
             </span>
-          ) : (
-            <span key={idx} className='text-slate-500 text-sm'>
-              {' '}
-              {category},{' '}
-            </span>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </div>
   );
