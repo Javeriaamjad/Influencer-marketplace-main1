@@ -64,7 +64,7 @@ export default function Example() {
             } else if (data.role === "creator") {
               router.push("/creator");
             } else {
-              router.push("/");
+              router.push("/explore");
             }
           }, 1000);
         } else {
