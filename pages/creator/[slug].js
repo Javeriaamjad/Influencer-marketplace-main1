@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/router";
 import { BiLogoInstagramAlt, BiLogoYoutube } from "react-icons/bi";
+import Link from 'next/link';
 
 export default function Page({ creator }) {
   const router = useRouter();

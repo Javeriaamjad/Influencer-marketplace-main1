@@ -1,5 +1,4 @@
-
-import Creator from "@models/Creator";
+import User from "@models/User";
 import { connectToDB } from "@mongodb";
 
 export const POST = async (req, { params }) => {
@@ -10,42 +9,13 @@ export const POST = async (req, { params }) => {
 
     const body = await req.json();
 
-    const { username, profileImage , bannerImage , city,   phone,
-        
-      state,
+    const { username, profileImage } = body;
 
-      category,
-      platforms,
-   
-      achievments,
-      description,
-      packages,
-      rating,
-      reviews,
-      price,
-      sample  } = body;
-
-    const updatedUser = await Creator.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
         username,
         profileImage,
-        bannerImage,
-        city,
-        phone,
-        
-        state,
-
-        category,
-        platforms,
-     
-        achievments,
-        description,
-        packages,
-        rating,
-        reviews,
-        price,
-        sample,
       },
       { new: true }
     );

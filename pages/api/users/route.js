@@ -1,4 +1,4 @@
-import Creator from "@models/Creator"
+import User from "@models/User"
 import { connectToDB } from "@mongodb"
 
 export const GET = async (req, res) => {

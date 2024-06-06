@@ -2,7 +2,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import Message from "../../model/Message"; 
+import Message from "../../model/message"; 
 
 const app = express();
 const PORT = process.env.PORT || 8000;
