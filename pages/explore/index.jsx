@@ -5,25 +5,6 @@ import HomeCard from "@/components/home/HomeCard";
 import mongoose from "mongoose";
 import Creator from "@/model/Creator";
 import Link from "next/link";
-<<<<<<< HEAD
-
-
-
-
-const Index = ({ creator }) => {
-  const backgroundImageStyle = {
-    backgroundImage: "url('assets/background.jpg')",
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    minHeight: '100vh' // Ensure it covers the full viewport height
-  };
-  
-  return (
-    <>
-    <div style={backgroundImageStyle}>
-      <MaxWidthWrapper className="mb-12 mt-20 sm:mt-40 flex flex-col items-center justify-center text-center">
-=======
 import Image from "next/image";
 import LogoBar from "./LogoBar";
 import { Button } from "@/components/ui/button";
