@@ -196,7 +196,7 @@ const howItWorksRef = useRef(null);
               </div>
 =======
               ))}
->>>>>>> 63df928335c07aa3747bb1cb08a3babb7e1655dd
+
             </div>
           </div>
         </div>
