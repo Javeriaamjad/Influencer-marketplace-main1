@@ -6,28 +6,25 @@ import mongoose from 'mongoose';
 import Creator from '@/model/Creator';
 import Link from 'next/link';
 import Dropdown from '../components/Dropdown';
+import FollowersDropDown from '@/components/followersDropdown';
 
 const Index = ({ creator }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
-  console.log(selectedCategory);
+  const [selectedFollower, setSelectedFollower] = useState(null); // Add state for selected follower count
 
-  const followerRanges = {
-    "1k to 10k": { min: 1000, max: 10000 },
-    "10k to 100k": { min: 10000, max: 100000 },
-    "100k to 1M": { min: 100000, max: 1000000 },
-  };
+  const filteredCreators = creator.filter((item) => {
+    if (selectedCategory && !item.category.includes(selectedCategory)) {
+      return false;
+    }
+    if (selectedFollower) {
+      const follower = item.platforms.find(
+        (platform) => platform.followers === selectedFollower
+      );
+      return !!follower;
+    }
+    return true;
+  });
 
-  const parseFollowerRange = (range) => followerRanges[range];
-
-  const filterByFollowerRange = (item, range) => {
-    const { min, max } = parseFollowerRange(range) || {}; 
-    return item.followers >= min && item.followers <= max;
-  };
-
-
-  const filteredCreators = selectedCategory
-    ? creator.filter((item) => item.category.includes(selectedCategory))
-    : creator;
 
   return (
     <div
@@ -46,7 +43,7 @@ const Index = ({ creator }) => {
       </header>
       
       <MaxWidthWrapper className="mb-12 mt-20 sm:mt-40 flex flex-col items-center justify-center text-center">
-        <div className="mx-auto mb-4 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-[#7042f88b] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 px-7 py-2 shadow-md transition-all Welcome-box">
+        <div className=" text-white mx-auto mb-4 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-[#7042f88b] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 px-7 py-2 shadow-md transition-all Welcome-box">
           <p className="Welcome-text text-sm font-semibold text-white cursor-pointer">
             Influenzar is now public!
           </p>
@@ -70,9 +67,9 @@ const Index = ({ creator }) => {
                 Hire top influencers across all platforms
               </p>
             </div>
-            <div>
+            <div className='flex'>
               <Dropdown onSelectCategory={setSelectedCategory} />
-              <FollowersDropDown onSelectFollower={setSelectedFollowerRange} />
+              <FollowersDropDown onSelectFollower={setSelectedFollower} />
 
             </div>
           </div>

@@ -12,11 +12,12 @@ const FollowersDropDown = ({ onSelectFollower }) => {
   };
   return (
     <div className="relative">
-      <button onClick={toggleDropdown} className="dropbtn">
+      <button onClick={toggleDropdown} 
+      className="dropbtn bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white font-semibold py-2 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
         Followers
       </button>
       {isOpen && (
-        <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
           <div
             className="py-1"
             role="menu"
