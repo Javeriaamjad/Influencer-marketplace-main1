@@ -5,13 +5,23 @@ import HomeCard from "@/components/home/HomeCard";
 import mongoose from "mongoose";
 import Creator from "@/model/Creator";
 import Link from "next/link";
+
 import Image from "next/image";
 import LogoBar from "./LogoBar";
 import { Button } from "@/components/ui/button";
 
-const Index = ({ creator }) => {
-  const howItWorksRef = useRef(null);
 
+
+
+const Index = ({ creator }) => {
+  const backgroundImageStyle = {
+    backgroundImage: "url('assets/background.jpg')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    minHeight: '100vh' // Ensure it covers the full viewport height
+  };
+  const howItWorksRef = useRef(null);
   const scrollToHowItWorks = () => {
     if (howItWorksRef.current) {
       window.scrollTo({
@@ -20,7 +30,6 @@ const Index = ({ creator }) => {
       });
     }
   };
-
   return (
     <>
       <MaxWidthWrapper className="mb-12 mt-20 sm:mt-40 flex flex-col items-center justify-center text-center">
@@ -40,7 +49,6 @@ const Index = ({ creator }) => {
               How It Works
             </Button>
           </div>
-
           <div className="image-container w-2/4">
             <Image src="/assets/inf2.jpg" height={1200} width={1200}></Image>
           </div>
@@ -91,7 +99,6 @@ const Index = ({ creator }) => {
             </div>
           </div>
         </div>
-
         {/* Instagram */}
         <div className="mx-auto max-w-7xl px-6 my-16">
           <h1 className="text-xl font-semibold">Instagram</h1>
@@ -126,9 +133,7 @@ const Index = ({ creator }) => {
     </>
   );
 };
-
 export default Index;
-
 export async function getServerSideProps({ params }) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGODB_URI);
