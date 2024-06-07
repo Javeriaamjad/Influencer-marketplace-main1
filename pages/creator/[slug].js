@@ -81,11 +81,11 @@ return (
       <h3>The Projects which you already have done</h3>
       <div className="packages grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-6">
         {creator.packages?.map((item, idx) => (
-          <div key={idx} className="package p-8 border-2 border-gray-200 rounded-3xl transition-transform duration-500 hover:scale-105 hover:border-transparent hover:shadow-xl hover:bg-gradient-to-r hover:from-purple-100 hover:via-pink-100  ">
-            <h1 className="text-3xl font-bold mb-4">Compaign Name: {item.title}</h1>
-            <p className="text-lg mb-4">Description: {item.description}</p>
+          <div key={idx} className="package p-8 border-2 bg-white border-black-500 rounded-3xl transition-transform duration-500 hover:scale-105 hover:border-transparent hover:shadow-xl ">
+            <h1 className="text-1xl font-bold mb-4">Compaign Name:  <span >{item.title}</span></h1>
+            <p className="text-lg mb-4"><span className="font-bold">Description: </span>{item.description}</p>
            
-            <h1 className="text-2xl">Est Price: ₹{item.price}</h1>
+            <h1 className="text-1xl">Est Price: ${item.price}</h1>
             <div className="mt-6">
               <Image
                 src={item.media[0]}
@@ -102,7 +102,7 @@ return (
       <div className="platforms grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-6">
         {creator.platforms?.map((item, idx) => (
           <div key={idx} className="platform p-8 border-2 border-gray-200 rounded-3xl transition-transform duration-500 hover:scale-105 hover:border-transparent hover:shadow-xl hover:bg-gradient-to-r hover:from-purple-100 hover:via-pink-100 ">
-            <h1 className="text-1xl font-bold">{item.profile}</h1>
+            <a href={item.profile} className="text-1xl font-bold">{item.profile} </a>
             <h1 className="text-lg mt-2"> {item.platform}</h1>
             <h1 className="text-2xl font-bold mt-4">Followers: {item.followers}</h1>
           </div>

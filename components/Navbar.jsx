@@ -73,28 +73,28 @@ const Navbar = () => {
     fetchUserData();
   }, []);
 
-  useEffect(() => {
+ useEffect(() => {
+    console.log("ccnjnjcjnncjn cjn");
     const fetchUserData = async () => {
       try {
         const storedUserData = JSON.parse(localStorage.getItem("user"));
-        const token = storedUserData.token;
-
-        const response = await fetch("/api/brand/getbrand", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const responseData = await response.json();
-        if (response.ok) {
-          setUserInfo(responseData.user);
-        } else {
-          console.error("Error fetching user data:", responseData.error);
+        if (storedUserData) {
+          const token = storedUserData.token;
+          console.log("brand",token)
+          const response = await fetch('/api/brand/getbrand', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const responseData = await response.json();
+          if (response.ok) {
+            setUserInfo(responseData.user);
+          } else {
+            console.error("Error fetching user data:", responseData.error);
+          }
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
-
     fetchUserData();
   }, []);
 

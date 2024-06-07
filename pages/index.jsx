@@ -197,7 +197,7 @@ const Index = ({ creator }) => {
                     name={item.username}
                     imageLink={item.profileImage}
                     platform={item.platforms.map((cur) => `${cur.platform}, `)}
-                    price={item.packages && item.packages.length > 0 ? item.packages[0].price : ''}
+                    //price={item.packages && item.packages.length > 0 ? item.packages[0].price : ''}
                     categories={item.category}
                   />
                 </Link>

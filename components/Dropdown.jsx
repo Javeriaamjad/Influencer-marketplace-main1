@@ -4,7 +4,7 @@ const Dropdown = ({ onSelectCategory }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const categories = ['food blogger', 'traveler', 'fashion', 'comedy'];
+  const categories = ['food blogger', 'traveler', 'fashion', 'comedy' , 'vlogger'];
 
   const handleCategoryClick = (category) => {
     onSelectCategory(category);

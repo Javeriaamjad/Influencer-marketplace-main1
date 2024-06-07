@@ -15,7 +15,7 @@ const HomeCard = ({ name, imageLink, platform, price, categories }) => {
         <div className="flex justify-between mt-2">
           <p className="font-bold text-gray-800">{name}</p>
           <p className="text-sm text-gray-600">{platform}</p>
-          <p className="text-blue-600 font-bold">₹{price}</p>
+          <p className="text-blue-600 font-bold">{price}</p>
         </div>
         <div className="flex flex-wrap mt-1">
           {categories.map((category, idx) => (

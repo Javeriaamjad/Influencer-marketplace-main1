@@ -85,13 +85,10 @@ const Index = ({ creator }) => {
                 <div className="m-2" style={{ width: "292px" }} key={item._id}>
                   <HomeCard
                     imageLink={item.profileImage}
-                    platform={item.platforms.map((cur) => `${cur.platform}, `)}
-                    price={
-                      item.packages && item.packages.length > 0
-                        ? item.packages[0].price
-                        : ""
-                    }
-                    categories={[item.category]}
+                    name = {item.username}
+                    categories={[]}
+                    
+                    
                     style={{ width: "100%", height: "300px" }}
                   />
                 </div>
@@ -111,13 +108,9 @@ const Index = ({ creator }) => {
                 <div className="m-2" style={{ width: "292px" }} key={item._id}>
                   <HomeCard
                     imageLink={item.profileImage}
-                    platform={item.platforms.map((cur) => `${cur.platform}, `)}
-                    price={
-                      item.packages && item.packages.length > 0
-                        ? item.packages[0].price
-                        : ""
-                    }
-                    categories={[item.category]}
+                    name = {item.username}
+                    
+                    categories={[]}
                     style={{ width: "100%", height: "300px" }}
                   />
                 </div>
