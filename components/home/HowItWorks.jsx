@@ -1,6 +1,6 @@
 const HowItWorks = () => {
   return (
-    <div className="p-8 bg-black">
+    <div className="p-8 bg-gray-400">
       <div className="row-holder">
         <h2
           className="row-title text-white font-extrabold text-6xl funky-title text-center mb-12"

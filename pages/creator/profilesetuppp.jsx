@@ -1381,29 +1381,6 @@ export default function Example() {
                     </button>
                   </div>
                 </div>
-                {/* <div className="fixed bottom-4 right-4">
-                  <button
-                    onClick={() => setIsChatOpen(true)}
-                    className="bg-purple-600 text-white rounded-full p-3 shadow-lg focus:outline-none hover:bg-purple-700 transition-all duration-300"
-                  >
-                    <ChatAlt2Icon className="h-6 w-6" />
-                  </button>
-                </div> */}
-                {/* 
-                {isChatOpen && (
-                  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-8 rounded-lg">
-                      <h2 className="text-xl font-bold mb-4">Chat Module</h2>
-                      <button
-                        onClick={() => setIsChatOpen(false)}
-                        className="bg-purple-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-purple-700 transition-all duration-300"
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                )}
-                 */}
                 <div className="fixed bottom-4 right-4">
                   <Link href="/my-next-chat/app/page">
                     <button
@@ -1414,14 +1391,6 @@ export default function Example() {
                     </button>
                   </Link>
                 </div>
-
-                {/* {isChatOpen && (
-                  <Link href="/my-next-chat/app/page">
-                    <div onClick={() => setIsChatOpen(false)}>
-                      Go to Chat Module
-                    </div>
-                  </Link>
-                )} */}
               </form>
             </div>
           </div>
